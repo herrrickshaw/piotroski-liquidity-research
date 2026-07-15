@@ -55,8 +55,9 @@ were fixed:
 The thesis rests on the two cells that survived a 3.3× sample increase. The two that moved
 are shown moving.
 
-**It is downside avoidance, not upside capture** — the +33.7pp comes from weak-F names
-crashing (−25.6%), not strong-F names winning (+8.2%).
+**It is downside avoidance, not upside capture** — the +31.4pp comes from weak-F names
+crashing (**−24.6%**), not strong-F names winning (+6.8%). That mechanism is the most
+stable thing here: it held at all three sample sizes.
 
 **Capacity ≈ $250,000**, set by execution rather than fees: above it a position exceeds
 ~15–20% of the median illiquid name's $0.16M daily volume.
@@ -110,8 +111,8 @@ businesses; illiquid stocks are better investments.** Both hold.
 
 ## Metrics that failed validation
 
-Six derived metrics looked populated and plausible and were wrong. **Every one was caught
-by an independent check; none by reasoning.** Documented in
+**Eleven** derived metrics looked populated and plausible and were wrong. **Every one was
+caught by an independent check; none by reasoning.** Documented in
 [the paper §5](reports/PIOTROSKI_LIQUIDITY_PAPER.md):
 
 | metric | failure | caught by |
@@ -122,8 +123,23 @@ by an independent check; none by reasoning.** Documented in
 | Current-ratio proxy | 62.1% vs a 57.6% coin-flip baseline | independent ground truth |
 | Gross margin | 98% for a services firm (true ~42%) | TCS: raw materials 0.1% of sales |
 | Darvas gradient | reversed under proper power | 117 → 12,773 signals |
+| US price panel | missing CME, Cummins, all of D–L | counting first letters |
+| US revenue tag | ADM $25.7B vs a $93.9B 10-K | `cost > revenue` is impossible |
+| Lender EBIT | wrong for banks — **cancels into the plausible band** | ROE cross-check on a financial |
+| Per-market floors | fabricated; reproduce under no definition | recomputing them |
+| `(x or 0)` | NaN is truthy, so `nan or 0` is `nan` | executing it |
 
-Two were corrections to this analysis's own earlier conclusions.
+**Three were corrections to this analysis's own conclusions. Three more were fixes
+proposed here that the data refuted *before they shipped*:**
+
+- an `interest/revenue ≥ 25%` lender gate — caught **Adani Power** (a utility), missed
+  **360ONE** and **5PAISA** (both NBFCs). Interest/revenue measures leverage, not lending.
+- *"bonds pass the value gate on face value"* — **0 of 446 clear ₹1 crore**; median bond
+  turnover is ₹0.9 lakh/day. Reasoned from a precedent instead of measuring.
+- the per-market floors, asserted as "the 47th percentile" without recomputation.
+
+Each was a plausible mechanism asserted without a check. **The pattern is the finding:
+a mechanism that sounds right is not evidence.**
 
 ## Limitations
 
