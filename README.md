@@ -11,38 +11,49 @@ conditioned by firm size, or by stock liquidity?**
 
 ## 🔴 Read this before the results
 
-**Every US result in `reports/` was computed on a broken price panel and must be re-run.**
+**Numbers in `reports/` are being regenerated. Treat every figure as provisional.**
 
-The panel used (`global-market-data/cache_seed/ltm/US.parquet`) turned out to be an
-**interrupted alphabetical collection**: 5,358 symbols, but CME Group and Cummins absent
-and its most-covered names all starting with B. The 597 tickers behind every US number
-contain letters **A,B,C,M,N,P,Q,R,S,T and no D–L, O, U–Z**.
+Five agents were sent to *refute* (not confirm) each derived field. They found **eight
+defects**. Three fixed, one documented-and-unfixed, a re-collection running.
 
-The fix is a path change (`global-stock-screener/cache_seed/ltm/US.parquet`, 9,278
-symbols — EDGAR overlap rises 50% → 97%), already applied to the scripts. **The scripts
-are correct; the committed CSVs are not.** Re-running them is the first job.
+| | |
+|---|---|
+| **Fixed — invalidates the tables** | US `revenue` stored the ASC-606 *contract-revenue subset*, not total. ADM FY2023 held **$25.69B vs a 10-K ~$93.9B — 3.7× wrong**. `cost_of_revenue > revenue` (impossible) fired on 262/5,418 rows. Revenue feeds Piotroski tests 8 and 9, so it **flips booleans** — and it skews to multi-segment filers, i.e. large caps, i.e. the cell carrying the headline. |
+| **NOT fixed — documented** | `EBIT = PBT + interest` is **wrong for lenders**; for a bank/NBFC interest is cost of goods sold. EBIT inflates ~4×, capital employed ~9×, and **the errors cancel into the 5–25% plausible band** so no range check fires. It survived validation because the checks used (RELIANCE 8.9%, TCS 56.8%) are both non-financials. **ROCE for Indian lenders is wrong and there is no guard.** |
+| **Fixed** | Per-market floors were **fabricated** — US $475k reproduced under no universe definition ($300k with junk, $896k without). The "India 47th percentile" anchor existed only because 1,079 of 3,476 panel names are delisted. Deleted, not recomputed. |
+| **Fixed** | `(x or 0)` silently keeps NaN — `float(str(nan))` succeeds so the `None` fallback never fires, and **NaN is truthy**. Voided 15% of gate-passing rows. |
+| **Fixed earlier** | The US price panel was an **interrupted alphabetical collection** — CME, Cummins and all of D–L absent. The 597-ticker sample held only A,B,C,M,N,P,Q,R,S,T. |
 
-The *direction* of the findings is unlikely to reverse — they are structural, not
-letter-specific — but **every sample size and cell count is provisional.**
+**Coverage rose 13% → 43%** of available tickers once the panel and an inconsistent field
+requirement were fixed. Sample sizes below are understated.
 
 Run `data_completeness_audit.py` before trusting any sample size here.
-
----
 
 ## The finding
 
 **The premium tracks illiquidity, not size.** Double-sorting liquidity within size
 (market cap point-in-time: last close × shares as filed):
 
-| Size | Liquidity | n | F≥70 | F<40 | **Premium** |
-|---|---|---|---|---|---|
-| Small | Illiquid | 819 | +7.2% | −6.6% | **+13.8pp** |
-| Small | Liquid | 818 | −1.8% | −9.6% | +7.7pp |
-| **Large** | **Illiquid** | 818 | +8.2% | **−25.6%** | **+33.7pp** |
-| Large | Liquid | 818 | +3.6% | +5.3% | **−1.7pp** |
+| Size | Liquidity | n | F≥70 | F<40 | **Premium** | @818 | @1,673 |
+|---|---|---|---|---|---|---|---|
+| Small | **Illiquid** | 2,703 | +3.4% | −10.0% | **+13.4pp** | +13.8 | +12.2 |
+| Small | Liquid | 2,703 | +4.6% | −2.9% | +7.5pp | +7.7 | **+13.9** |
+| **Large** | **Illiquid** | 2,703 | +6.8% | **−24.6%** | **+31.4pp** | +33.7 | +27.8 |
+| Large | Liquid | 2,702 | +8.2% | +0.9% | **+7.4pp** | **−1.7** | +3.6 |
 
-Illiquid beats liquid in **both** size buckets. The largest premium is in **large but
-illiquid** firms. The only negative cell is large-and-liquid.
+Illiquid beats liquid **within both size buckets**; the largest premium is in **large,
+illiquid** firms — 4× the next cell.
+
+**The last two columns matter.** The same cells at three sample sizes, as data defects
+were fixed:
+- **Small+Liquid** reversed at n=1,673 (+13.9, appearing to contradict the thesis — which
+  was retracted on it) then reverted to +7.5. The middle run was the outlier.
+- **Large+Liquid** climbed −1.7 → +3.6 → **+7.4**. An earlier draft called it *"the only
+  negative cell"*. **That claim is withdrawn — it is positive**, merely smallest.
+- **Large+Illiquid and Small+Illiquid held** across all three.
+
+The thesis rests on the two cells that survived a 3.3× sample increase. The two that moved
+are shown moving.
 
 **It is downside avoidance, not upside capture** — the +33.7pp comes from weak-F names
 crashing (−25.6%), not strong-F names winning (+8.2%).
