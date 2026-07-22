@@ -1,5 +1,7 @@
 # Piotroski × Liquidity — research code
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/herrrickshaw/piotroski-liquidity-research/blob/main/notebooks/colab_test.ipynb)
+
 Point-in-time backtests asking one question: **is the Piotroski F-score premium
 conditioned by firm size, or by stock liquidity?**
 
