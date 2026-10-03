@@ -1,0 +1,116 @@
+{
+  "adaptive_liquidity.py": {
+    "mtime": 1784113514.620984,
+    "seen": 1789968867.924217,
+    "ast_hash": "777179d256dff9351c55f14e0b549407",
+    "semantic_hash": ""
+  },
+  "backtest_liquidity_forward.py": {
+    "mtime": 1784107601.456683,
+    "seen": 1789968867.9242299,
+    "ast_hash": "d0c24cb457d390efade975fe023599f2",
+    "semantic_hash": ""
+  },
+  "combo_by_tier_us.py": {
+    "mtime": 1784107601.448124,
+    "seen": 1789193335.509869,
+    "ast_hash": "21921dd11b8ea6369a4dc1b8c1f6ecd2",
+    "semantic_hash": ""
+  },
+  "cost_vs_edge.py": {
+    "mtime": 1785596649.325191,
+    "seen": 1789968867.924248,
+    "ast_hash": "baf1290bb9ccf60738f43f884872ea00",
+    "semantic_hash": ""
+  },
+  "daily_breakout_combo_us.py": {
+    "mtime": 1784113514.642778,
+    "seen": 1789968867.924254,
+    "ast_hash": "b79ddd06555554b6de0cc7f428fe7eeb",
+    "semantic_hash": ""
+  },
+  "data_completeness_audit.py": {
+    "mtime": 1784113514.626008,
+    "seen": 1789968867.924261,
+    "ast_hash": "8addd162b5161d182cbfa6d46ed36fd6",
+    "semantic_hash": ""
+  },
+  "golden_cross.py": {
+    "mtime": 1784107601.460882,
+    "seen": 1789968867.924266,
+    "ast_hash": "579ad9bc18a55f0469a153f6877f1e4c",
+    "semantic_hash": ""
+  },
+  "piotroski_plus.py": {
+    "mtime": 1784113514.64885,
+    "seen": 1789968867.924271,
+    "ast_hash": "f0a22c84ae2617f8342ea118ba1d276e",
+    "semantic_hash": ""
+  },
+  "roace_by_liquidity.py": {
+    "mtime": 1784107601.458971,
+    "seen": 1789968867.9242759,
+    "ast_hash": "69aaf9d26a4aa8be8d43f0d5d292eb7e",
+    "semantic_hash": ""
+  },
+  "size_vs_liquidity_us.py": {
+    "mtime": 1785596106.255458,
+    "seen": 1789968867.924282,
+    "ast_hash": "6e5a5798df2c95f4fa02757af4ca9150",
+    "semantic_hash": ""
+  },
+  "sweep_piotroski_plus.py": {
+    "mtime": 1784113514.639818,
+    "seen": 1789968867.924288,
+    "ast_hash": "d277dab8dcbfcb124747e8fcc2bfc164",
+    "semantic_hash": ""
+  },
+  "sweep_piotroski_plus_us.py": {
+    "mtime": 1784113514.636764,
+    "seen": 1789968867.924293,
+    "ast_hash": "2ebf40abbc8d7d08ce5a574594b14cdc",
+    "semantic_hash": ""
+  },
+  "validate_current_ratio_proxy.py": {
+    "mtime": 1784107601.454357,
+    "seen": 1789968867.924298,
+    "ast_hash": "ebb039023d9004a9055d182a9f4f627f",
+    "semantic_hash": ""
+  },
+  "verify_f_band_us.py": {
+    "mtime": 1784107601.45041,
+    "seen": 1789968867.9243038,
+    "ast_hash": "98416ded53b738994e891c6f2c0ffb23",
+    "semantic_hash": ""
+  },
+  ".github/workflows/quality-gates.yml": {
+    "mtime": 1785628553.333622,
+    "seen": 1789968867.924309,
+    "ast_hash": "4e9413c1b2b89f6c00da0a3cb06b78be",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1785596106.247001,
+    "seen": 1789968867.924313,
+    "ast_hash": "8ff92117b7009b0faf078400f24c9759",
+    "semantic_hash": ""
+  },
+  "reports/CAVEMAN_SUMMARY.md": {
+    "mtime": 1784113514.616394,
+    "seen": 1789968867.9243178,
+    "ast_hash": "646fec4dd4c9e35f75f9599d2caf5b75",
+    "semantic_hash": ""
+  },
+  "reports/PIOTROSKI_LIQUIDITY_PAPER.md": {
+    "mtime": 1785596649.325663,
+    "seen": 1789193335.50988,
+    "ast_hash": "f7553c749355cc0e7b3bc8a46625caac",
+    "semantic_hash": ""
+  },
+  "requirements.md": {
+    "mtime": 1785596106.248137,
+    "seen": 1789968867.924331,
+    "ast_hash": "9d3fdc904303dda9050b882203fb79c1",
+    "semantic_hash": ""
+  }
+}

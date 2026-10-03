@@ -1,0 +1,3865 @@
+{
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "nodes": [
+    {
+      "id": "adaptive_liquidity",
+      "label": "adaptive_liquidity.py",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_scan_floor",
+      "label": "scan_floor()",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L131",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_market_floor",
+      "label": "market_floor()",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L146",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_gate",
+      "label": "Gate",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L168",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_gate_position_usd",
+      "label": ".position_usd()",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L174",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_gate_min_adv_usd",
+      "label": ".min_adv_usd()",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L178",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_classify",
+      "label": "classify()",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L196",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_py_dataframe",
+      "label": "DataFrame",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_capacity",
+      "label": "capacity()",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L219",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_retier",
+      "label": "retier()",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L236",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_describe",
+      "label": "describe()",
+      "file_type": "code",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L268",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_rationale_2",
+      "label": "adaptive_liquidity.py — a liquidity filter that adapts to each market AND to…",
+      "file_type": "rationale",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_rationale_132",
+      "label": "Floor a SCAN should apply: structural, plus policy where one was chosen.…",
+      "file_type": "rationale",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L132",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_rationale_147",
+      "label": "Policy floor for one market in USD/day, or 0 where no policy was chosen.…",
+      "file_type": "rationale",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L147",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_rationale_179",
+      "label": "Smallest ADV this capital can trade without breaching the execution ceiling.…",
+      "file_type": "rationale",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L179",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_rationale_197",
+      "label": "Add `tradeable`, `adv_pct`, and a percentile `tier` to a per-symbol frame. `df`…",
+      "file_type": "rationale",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L197",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_rationale_220",
+      "label": "Largest portfolio each market supports, at a range of universe breadths.…",
+      "file_type": "rationale",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L220",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_rationale_238",
+      "label": "Replace a scan's ABSOLUTE tiers with PERCENTILE tiers, in one post-pass. Wiring…",
+      "file_type": "rationale",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L238",
+      "_origin": "ast"
+    },
+    {
+      "id": "adaptive_liquidity_rationale_269",
+      "label": "One line per market. Makes cross-market comparison possible without constants.",
+      "file_type": "rationale",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L269",
+      "_origin": "ast"
+    },
+    {
+      "id": "backtest_liquidity_forward",
+      "label": "backtest_liquidity_forward.py",
+      "file_type": "code",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "backtest_liquidity_forward_build",
+      "label": "build()",
+      "file_type": "code",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L69",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "duckdbpyconnection",
+      "label": "DuckDBPyConnection",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "backtest_liquidity_forward_sample",
+      "label": "sample()",
+      "file_type": "code",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L150",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "backtest_liquidity_forward_report",
+      "label": "report()",
+      "file_type": "code",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L188",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "backtest_liquidity_forward_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L227",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "backtest_liquidity_forward_rationale_2",
+      "label": "backtest_liquidity_forward.py — does liquidity PREDICT forward returns? WHY…",
+      "file_type": "rationale",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "backtest_liquidity_forward_rationale_151",
+      "label": "Quarterly rebalance dates, stopping HOLD_BARS before data end.",
+      "file_type": "rationale",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L151",
+      "_origin": "ast"
+    },
+    {
+      "id": "combo_by_tier_us",
+      "label": "combo_by_tier_us.py",
+      "file_type": "code",
+      "source_file": "combo_by_tier_us.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "combo_by_tier_us_rationale_2",
+      "label": "combo_by_tier_us.py — darvas x piotroski7 cut by liquidity tier. UNDERPOWERED;…",
+      "file_type": "rationale",
+      "source_file": "combo_by_tier_us.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "cost_vs_edge",
+      "label": "cost_vs_edge.py",
+      "file_type": "code",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "cost_vs_edge_corwin_schultz",
+      "label": "corwin_schultz()",
+      "file_type": "code",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L80",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "cost_vs_edge_py_dataframe",
+      "label": "DataFrame",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "cost_vs_edge_amihud",
+      "label": "amihud()",
+      "file_type": "code",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L123",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "cost_vs_edge_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L141",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "cost_vs_edge_rationale_2",
+      "label": "cost_vs_edge.py — does the small-cap Piotroski edge survive trading costs? THE…",
+      "file_type": "rationale",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "cost_vs_edge_rationale_81",
+      "label": "Corwin-Schultz (2012) two-day high-low spread estimator, per symbol. beta = sum…",
+      "file_type": "rationale",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L81",
+      "_origin": "ast"
+    },
+    {
+      "id": "cost_vs_edge_rationale_124",
+      "label": "Amihud ILLIQ: price impact per $1M traded (scaled), per symbol.",
+      "file_type": "rationale",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L124",
+      "_origin": "ast"
+    },
+    {
+      "id": "daily_breakout_combo_us",
+      "label": "daily_breakout_combo_us.py",
+      "file_type": "code",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "daily_breakout_combo_us_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L73",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "daily_breakout_combo_us_main_tests",
+      "label": "tests()",
+      "file_type": "code",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L142",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "daily_breakout_combo_us_rationale_2",
+      "label": "daily_breakout_combo_us.py — darvas x piotroski7, scanned DAILY, cut by…",
+      "file_type": "rationale",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "data_completeness_audit",
+      "label": "data_completeness_audit.py",
+      "file_type": "code",
+      "source_file": "data_completeness_audit.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "data_completeness_audit_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "data_completeness_audit.py",
+      "source_location": "L67",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "data_completeness_audit_rationale_2",
+      "label": "data_completeness_audit.py — how much of the data did each analysis actually…",
+      "file_type": "rationale",
+      "source_file": "data_completeness_audit.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "golden_cross",
+      "label": "golden_cross.py",
+      "file_type": "code",
+      "source_file": "golden_cross.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "golden_cross_compute",
+      "label": "compute()",
+      "file_type": "code",
+      "source_file": "golden_cross.py",
+      "source_location": "L49",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "golden_cross_py_dataframe",
+      "label": "DataFrame",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "golden_cross_row_fields",
+      "label": "row_fields()",
+      "file_type": "code",
+      "source_file": "golden_cross.py",
+      "source_location": "L92",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "golden_cross_rationale_2",
+      "label": "golden_cross.py — one 50/200-DMA implementation for every market. WHY --- The…",
+      "file_type": "rationale",
+      "source_file": "golden_cross.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "golden_cross_rationale_50",
+      "label": "50/200-DMA state for one symbol. Never raises — returns a null result.",
+      "file_type": "rationale",
+      "source_file": "golden_cross.py",
+      "source_location": "L50",
+      "_origin": "ast"
+    },
+    {
+      "id": "golden_cross_rationale_93",
+      "label": "Scan-row fields, named consistently across every market.",
+      "file_type": "rationale",
+      "source_file": "golden_cross.py",
+      "source_location": "L93",
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus",
+      "label": "piotroski_plus.py",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_series",
+      "label": "_series()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L150",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_at",
+      "label": "_at()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L162",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_score",
+      "label": "score()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L166",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_score_t",
+      "label": "T()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L203",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_score_p",
+      "label": "P()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L257",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_ran",
+      "label": "_ran()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L278",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_passed",
+      "label": "_passed()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L297",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_weigh",
+      "label": "weigh()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L303",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_sweep",
+      "label": "sweep()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L347",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_verdict",
+      "label": "verdict()",
+      "file_type": "code",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L352",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_rationale_2",
+      "label": "piotroski_plus.py — the canonical 9-point Piotroski F-score + a 3-point ROCE…",
+      "file_type": "rationale",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_rationale_151",
+      "label": "All years for the first matching statement line, newest first.",
+      "file_type": "rationale",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L151",
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_rationale_167",
+      "label": "Piotroski F (0-9) + ROCE block (0-3) for one yfinance Ticker. Returns…",
+      "file_type": "rationale",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L167",
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_rationale_279",
+      "label": "Did this test actually run? NOT simply `v is not None`. A scored result round-…",
+      "file_type": "rationale",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L279",
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_rationale_304",
+      "label": "Apply a weight vector to an ALREADY-SCORED result. No network, no refetch. Pass…",
+      "file_type": "rationale",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L304",
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_rationale_348",
+      "label": "pct under every preset, for one scored company. Cheap: pure arithmetic.",
+      "file_type": "rationale",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L348",
+      "_origin": "ast"
+    },
+    {
+      "id": "piotroski_plus_rationale_353",
+      "label": "Label. Requires BOTH blocks to be well-measured — a company that is strong on…",
+      "file_type": "rationale",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L353",
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity",
+      "label": "roace_by_liquidity.py",
+      "file_type": "code",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_tiers",
+      "label": "tiers()",
+      "file_type": "code",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L65",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_py_dataframe",
+      "label": "DataFrame",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_series",
+      "label": "_series()",
+      "file_type": "code",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L84",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_roace_one",
+      "label": "roace_one()",
+      "file_type": "code",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L96",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_piotroski",
+      "label": "_piotroski()",
+      "file_type": "code",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L174",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_piotroski_at",
+      "label": "at()",
+      "file_type": "code",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L202",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_piotroski_test",
+      "label": "test()",
+      "file_type": "code",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L207",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L243",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_rationale_2",
+      "label": "roace_by_liquidity.py — ROACE across large/mid/small cap, split by liquidity.…",
+      "file_type": "rationale",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_rationale_85",
+      "label": "All available years for the first matching statement line, newest first.",
+      "file_type": "rationale",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L85",
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_rationale_97",
+      "label": "ROCE for one symbol: latest, cash-adjusted, and its 5-year stability. THREE…",
+      "file_type": "rationale",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L97",
+      "_origin": "ast"
+    },
+    {
+      "id": "roace_by_liquidity_rationale_175",
+      "label": "Piotroski F-score from the SAME statements — 7 of the 9 tests. Computed here…",
+      "file_type": "rationale",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L175",
+      "_origin": "ast"
+    },
+    {
+      "id": "size_vs_liquidity_us",
+      "label": "size_vs_liquidity_us.py",
+      "file_type": "code",
+      "source_file": "size_vs_liquidity_us.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "size_vs_liquidity_us_rationale_2",
+      "label": "size_vs_liquidity_us.py — is the F-score edge about LIQUIDITY or SIZE? THE…",
+      "file_type": "rationale",
+      "source_file": "size_vs_liquidity_us.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus",
+      "label": "sweep_piotroski_plus.py",
+      "file_type": "code",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_load",
+      "label": "load()",
+      "file_type": "code",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L70",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_tests",
+      "label": "tests()",
+      "file_type": "code",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L85",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_tests_gm",
+      "label": "_gm()",
+      "file_type": "code",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L131",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L155",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_rationale_2",
+      "label": "sweep_piotroski_plus.py — weight-vector sweep on REAL 10-year point-in-time…",
+      "file_type": "rationale",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_rationale_86",
+      "label": "The 8 available Piotroski tests + the 3 ROCE tests, as raw booleans.",
+      "file_type": "rationale",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L86",
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_us",
+      "label": "sweep_piotroski_plus_us.py",
+      "file_type": "code",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_us_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L61",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_us_main_tests",
+      "label": "tests()",
+      "file_type": "code",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L134",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "sweep_piotroski_plus_us_rationale_2",
+      "label": "sweep_piotroski_plus_us.py — weight sweep on US SEC EDGAR data. WHY THE US RUN…",
+      "file_type": "rationale",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "validate_current_ratio_proxy",
+      "label": "validate_current_ratio_proxy.py",
+      "file_type": "code",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "validate_current_ratio_proxy_truth",
+      "label": "truth()",
+      "file_type": "code",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L63",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "validate_current_ratio_proxy_truth_row",
+      "label": "row()",
+      "file_type": "code",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L74",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "validate_current_ratio_proxy_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L93",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "validate_current_ratio_proxy_rationale_2",
+      "label": "validate_current_ratio_proxy.py — is the screener.in current-ratio proxy…",
+      "file_type": "rationale",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "validate_current_ratio_proxy_rationale_64",
+      "label": "yfinance's REAL current assets / current liabilities, per fiscal year.",
+      "file_type": "rationale",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L64",
+      "_origin": "ast"
+    },
+    {
+      "id": "verify_f_band_us",
+      "label": "verify_f_band_us.py",
+      "file_type": "code",
+      "source_file": "verify_f_band_us.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "verify_f_band_us_rationale_2",
+      "label": "verify_f_band_us.py — reconcile today's F-band result with the 2026-07-09…",
+      "file_type": "rationale",
+      "source_file": "verify_f_band_us.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme",
+      "label": "README.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_piotroski_liquidity_research_code",
+      "label": "Piotroski × Liquidity — research code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_read_this_before_the_results",
+      "label": "🔴 Read this before the results",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_the_finding",
+      "label": "The finding",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_papers",
+      "label": "Papers",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L79",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_code",
+      "label": "Code",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L84",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_method_notes",
+      "label": "Method notes",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L101",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_metrics_that_failed_validation",
+      "label": "Metrics that failed validation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L114",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_limitations",
+      "label": "Limitations",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L146",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_references",
+      "label": "References",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L157",
+      "_origin": "ast"
+    },
+    {
+      "id": "readme_data",
+      "label": "Data",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "README.md",
+      "source_location": "L165",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary",
+      "label": "CAVEMAN_SUMMARY.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "label": "CAVEMAN PAPER: WHY GOOD SCORE ONLY WORK IN QUIET STOCK",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_warning_numbers_here_are_being_redone",
+      "label": "🔴 WARNING: NUMBERS HERE ARE BEING REDONE",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_the_big_thing",
+      "label": "THE BIG THING",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L23",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_how_we_find_out",
+      "label": "HOW WE FIND OUT",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L42",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_why_score_work_it_not_find_winner_it_dodge_rock",
+      "label": "WHY SCORE WORK — IT NOT FIND WINNER, IT DODGE ROCK",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L76",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_why_not_work_in_loud_big_company",
+      "label": "WHY NOT WORK IN LOUD BIG COMPANY",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L93",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_how_much_money_can_use_this",
+      "label": "HOW MUCH MONEY CAN USE THIS",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L109",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_other_thing_we_find_good_company_good_stock",
+      "label": "OTHER THING WE FIND: GOOD COMPANY ≠ GOOD STOCK",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L148",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_example_two_company_same_score_very_different",
+      "label": "EXAMPLE: TWO COMPANY, SAME SCORE, VERY DIFFERENT",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L174",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_eleven_time_we_wrong_this_the_useful_part",
+      "label": "ELEVEN TIME WE WRONG (this the useful part)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L191",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_average_lie_middle_tell_truth",
+      "label": "AVERAGE LIE. MIDDLE TELL TRUTH.",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L221",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_what_we_assume_if_assume_wrong_answer_wrong",
+      "label": "WHAT WE ASSUME (if assume wrong, answer wrong)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L240",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_where_data_come_from",
+      "label": "WHERE DATA COME FROM",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L256",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_key_insight_short_list",
+      "label": "KEY INSIGHT — SHORT LIST",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L277",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_caveman_summary_how_much_believe_this",
+      "label": "HOW MUCH BELIEVE THIS?",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L292",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper",
+      "label": "PIOTROSKI_LIQUIDITY_PAPER.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "label": "Liquidity, Not Size, Conditions the Piotroski F-Score Premium",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_evidence_from_us_equities_2016_2026_with_point_in_time_filing_dates",
+      "label": "Evidence from US equities, 2016–2026, with point-in-time filing dates",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_abstract",
+      "label": "Abstract",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L29",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_1_introduction",
+      "label": "1. Introduction",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L50",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_2_data",
+      "label": "2. Data",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L71",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_3_method",
+      "label": "3. Method",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L96",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_4_results",
+      "label": "4. Results",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L106",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_4_1_the_premium_tracks_illiquidity_not_size",
+      "label": "4.1 The premium tracks illiquidity, not size",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L108",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_4_2_liquidity_predicts_firm_quality_the_fang_noe_tice_channel",
+      "label": "4.2 Liquidity predicts firm quality — the Fang–Noe–Tice channel",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L142",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_4_3_capacity",
+      "label": "4.3 Capacity",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L163",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_4_4_the_f_score_does_not_improve_breakouts",
+      "label": "4.4 The F-score does not improve breakouts",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L198",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_5_what_failed",
+      "label": "5. What failed",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L212",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_6_limitations",
+      "label": "6. Limitations",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L249",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_7_conclusion",
+      "label": "7. Conclusion",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L264",
+      "_origin": "ast"
+    },
+    {
+      "id": "reports_piotroski_liquidity_paper_references",
+      "label": "References",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L281",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements",
+      "label": "requirements.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "source_file": "requirements.md",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_python_package_reference_market_crypto_forex_data",
+      "label": "Python Package Reference — Market, Crypto & Forex Data",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_contents",
+      "label": "Contents",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L33",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_1_general_global_market_data",
+      "label": "1 — General & global market data",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L59",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_2_india_nse_bse",
+      "label": "2 — India — NSE / BSE",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L73",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_3_china_a_shares",
+      "label": "3 — China — A-shares",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L84",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_4_korea_japan_asia_pac",
+      "label": "4 — Korea / Japan / Asia-Pac",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L91",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_5_us_fundamentals_sec_edgar",
+      "label": "5 — US fundamentals — SEC EDGAR",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L98",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_6_technical_analysis_indicators",
+      "label": "6 — Technical analysis & indicators",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L110",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_7_backtesting_engines",
+      "label": "7 — Backtesting engines",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L121",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_8_portfolio_construction_risk",
+      "label": "8 — Portfolio construction & risk",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L131",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_9_performance_analytics",
+      "label": "9 — Performance analytics",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L138",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_10_options_derivatives_pricing",
+      "label": "10 — Options & derivatives pricing",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L146",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_11_ml_driven_quant_platforms",
+      "label": "11 — ML-driven quant platforms",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L154",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_12_india_broker_execution_apis",
+      "label": "12 — India broker execution APIs",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L161",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_13_screening_fundamentals_scrape",
+      "label": "13 — Screening & fundamentals scrape",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L169",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_14_hong_kong_taiwan",
+      "label": "14 — Hong Kong & Taiwan",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L175",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_15_australia_canada",
+      "label": "15 — Australia & Canada",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L184",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_16_brazil_latin_america",
+      "label": "16 — Brazil & Latin America",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L193",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_17_southeast_asia_asean",
+      "label": "17 — Southeast Asia (ASEAN)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L203",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_18_middle_east_africa",
+      "label": "18 — Middle East & Africa",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L211",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_19_multi_market_aggregator_apis",
+      "label": "19 — Multi-market aggregator APIs",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L220",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_20_cryptocurrency_data",
+      "label": "20 — Cryptocurrency data",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L231",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_21_forex_currency_data",
+      "label": "21 — Forex & currency data",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L244",
+      "_origin": "ast"
+    },
+    {
+      "id": "requirements_appendix_relevance_by_repo",
+      "label": "Appendix — relevance by repo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "source_file": "requirements.md",
+      "source_location": "L261",
+      "_origin": "ast"
+    }
+  ],
+  "links": [
+    {
+      "source": "adaptive_liquidity",
+      "target": "dataclasses",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity",
+      "target": "pandas",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity",
+      "target": "adaptive_liquidity_scan_floor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L131",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity",
+      "target": "adaptive_liquidity_market_floor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity",
+      "target": "adaptive_liquidity_gate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L168",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_gate",
+      "target": "adaptive_liquidity_gate_position_usd",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L174",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_gate",
+      "target": "adaptive_liquidity_gate_min_adv_usd",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L178",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity",
+      "target": "adaptive_liquidity_classify",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L196",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_classify",
+      "target": "adaptive_liquidity_py_dataframe",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L196",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_classify",
+      "target": "adaptive_liquidity_gate",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L196",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity",
+      "target": "adaptive_liquidity_capacity",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L219",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_capacity",
+      "target": "adaptive_liquidity_py_dataframe",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L219",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity",
+      "target": "adaptive_liquidity_retier",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L236",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_retier",
+      "target": "adaptive_liquidity_py_dataframe",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L236",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity",
+      "target": "adaptive_liquidity_describe",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L268",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_describe",
+      "target": "adaptive_liquidity_py_dataframe",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L268",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_scan_floor",
+      "target": "adaptive_liquidity_market_floor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L139",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_gate_min_adv_usd",
+      "target": "adaptive_liquidity_market_floor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L193",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_rationale_2",
+      "target": "adaptive_liquidity",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_rationale_132",
+      "target": "adaptive_liquidity_scan_floor",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L132",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_rationale_147",
+      "target": "adaptive_liquidity_market_floor",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L147",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_rationale_179",
+      "target": "adaptive_liquidity_gate_min_adv_usd",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L179",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_rationale_197",
+      "target": "adaptive_liquidity_classify",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L197",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_rationale_220",
+      "target": "adaptive_liquidity_capacity",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L220",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_rationale_238",
+      "target": "adaptive_liquidity_retier",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L238",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "adaptive_liquidity_rationale_269",
+      "target": "adaptive_liquidity_describe",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "adaptive_liquidity.py",
+      "source_location": "L269",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward",
+      "target": "sys",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward",
+      "target": "duckdb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward",
+      "target": "backtest_liquidity_forward_build",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward_build",
+      "target": "duckdbpyconnection",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward",
+      "target": "backtest_liquidity_forward_sample",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L150",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward_sample",
+      "target": "duckdbpyconnection",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L150",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward",
+      "target": "backtest_liquidity_forward_report",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L188",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward_report",
+      "target": "duckdbpyconnection",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L188",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward",
+      "target": "backtest_liquidity_forward_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L227",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward_main",
+      "target": "backtest_liquidity_forward_build",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L233",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward_main",
+      "target": "backtest_liquidity_forward_sample",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L234",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward_main",
+      "target": "backtest_liquidity_forward_report",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L235",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward_rationale_2",
+      "target": "backtest_liquidity_forward",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "backtest_liquidity_forward_rationale_151",
+      "target": "backtest_liquidity_forward_sample",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "backtest_liquidity_forward.py",
+      "source_location": "L151",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "combo_by_tier_us_rationale_2",
+      "target": "combo_by_tier_us",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "combo_by_tier_us.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge",
+      "target": "warnings",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge",
+      "target": "duckdb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge",
+      "target": "numpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge",
+      "target": "pandas",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge",
+      "target": "cost_vs_edge_corwin_schultz",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge_corwin_schultz",
+      "target": "cost_vs_edge_py_dataframe",
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge",
+      "target": "cost_vs_edge_amihud",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L123",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge_amihud",
+      "target": "cost_vs_edge_py_dataframe",
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L123",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge",
+      "target": "cost_vs_edge_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L141",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge_main",
+      "target": "cost_vs_edge_corwin_schultz",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L148",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge_main",
+      "target": "cost_vs_edge_amihud",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L148",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge_rationale_2",
+      "target": "cost_vs_edge",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge_rationale_81",
+      "target": "cost_vs_edge_corwin_schultz",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "cost_vs_edge_rationale_124",
+      "target": "cost_vs_edge_amihud",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "cost_vs_edge.py",
+      "source_location": "L124",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "daily_breakout_combo_us",
+      "target": "warnings",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "daily_breakout_combo_us",
+      "target": "duckdb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "daily_breakout_combo_us",
+      "target": "pandas",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "daily_breakout_combo_us",
+      "target": "daily_breakout_combo_us_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "daily_breakout_combo_us_main",
+      "target": "daily_breakout_combo_us_main_tests",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L142",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "daily_breakout_combo_us_main",
+      "target": "daily_breakout_combo_us_main_tests",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L168",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "daily_breakout_combo_us_rationale_2",
+      "target": "daily_breakout_combo_us",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "daily_breakout_combo_us.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "data_completeness_audit",
+      "target": "duckdb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "data_completeness_audit.py",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "data_completeness_audit",
+      "target": "data_completeness_audit_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "data_completeness_audit.py",
+      "source_location": "L67",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "data_completeness_audit_rationale_2",
+      "target": "data_completeness_audit",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "data_completeness_audit.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross",
+      "target": "typing",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross",
+      "target": "pandas",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross",
+      "target": "golden_cross_compute",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross_compute",
+      "target": "golden_cross_py_dataframe",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross",
+      "target": "golden_cross_row_fields",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross_row_fields",
+      "target": "golden_cross_py_dataframe",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross_row_fields",
+      "target": "golden_cross_compute",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L94",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross_rationale_2",
+      "target": "golden_cross",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross_rationale_50",
+      "target": "golden_cross_compute",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "golden_cross_rationale_93",
+      "target": "golden_cross_row_fields",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "golden_cross.py",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "warnings",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L66",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "numpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "piotroski_plus_series",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L150",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "piotroski_plus_at",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L162",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "piotroski_plus_score",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L166",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_score",
+      "target": "piotroski_plus_score_t",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L203",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_score",
+      "target": "piotroski_plus_score_p",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L257",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "piotroski_plus_ran",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L278",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "piotroski_plus_passed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L297",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "piotroski_plus_weigh",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L303",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "piotroski_plus_sweep",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L347",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus",
+      "target": "piotroski_plus_verdict",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L352",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_score",
+      "target": "piotroski_plus_series",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L180",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_score",
+      "target": "piotroski_plus_at",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L212",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_score",
+      "target": "piotroski_plus_score_t",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L219",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_score",
+      "target": "piotroski_plus_score_p",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L266",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_weigh",
+      "target": "piotroski_plus_ran",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L335",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_weigh",
+      "target": "piotroski_plus_passed",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L338",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_sweep",
+      "target": "piotroski_plus_weigh",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L349",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_rationale_2",
+      "target": "piotroski_plus",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_rationale_151",
+      "target": "piotroski_plus_series",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L151",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_rationale_167",
+      "target": "piotroski_plus_score",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L167",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_rationale_279",
+      "target": "piotroski_plus_ran",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L279",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_rationale_304",
+      "target": "piotroski_plus_weigh",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L304",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_rationale_348",
+      "target": "piotroski_plus_sweep",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L348",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "piotroski_plus_rationale_353",
+      "target": "piotroski_plus_verdict",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "piotroski_plus.py",
+      "source_location": "L353",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "concurrent_futures",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "sys",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "warnings",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "duckdb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "pandas",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "roace_by_liquidity_tiers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L65",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_tiers",
+      "target": "roace_by_liquidity_py_dataframe",
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L65",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "roace_by_liquidity_series",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "roace_by_liquidity_roace_one",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "roace_by_liquidity_piotroski",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L174",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_piotroski",
+      "target": "roace_by_liquidity_piotroski_at",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L202",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_piotroski",
+      "target": "roace_by_liquidity_piotroski_test",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L207",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity",
+      "target": "roace_by_liquidity_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L243",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_roace_one",
+      "target": "roace_by_liquidity_series",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L132",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_roace_one",
+      "target": "roace_by_liquidity_piotroski",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L170",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_piotroski",
+      "target": "roace_by_liquidity_series",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L196",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_piotroski",
+      "target": "roace_by_liquidity_piotroski_at",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L214",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_piotroski",
+      "target": "roace_by_liquidity_piotroski_test",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L220",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_main",
+      "target": "roace_by_liquidity_tiers",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L246",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_main",
+      "target": "roace_by_liquidity_roace_one",
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L255",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_rationale_2",
+      "target": "roace_by_liquidity",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_rationale_85",
+      "target": "roace_by_liquidity_series",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_rationale_97",
+      "target": "roace_by_liquidity_roace_one",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "roace_by_liquidity_rationale_175",
+      "target": "roace_by_liquidity_piotroski",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "roace_by_liquidity.py",
+      "source_location": "L175",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "size_vs_liquidity_us_rationale_2",
+      "target": "size_vs_liquidity_us",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "size_vs_liquidity_us.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "sys",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "warnings",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "duckdb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "numpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "pandas",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "piotroski_plus",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "sweep_piotroski_plus_load",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "sweep_piotroski_plus_tests",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_tests",
+      "target": "sweep_piotroski_plus_tests_gm",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L131",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus",
+      "target": "sweep_piotroski_plus_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_tests",
+      "target": "sweep_piotroski_plus_tests_gm",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L139",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_main",
+      "target": "sweep_piotroski_plus_load",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L156",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_main",
+      "target": "sweep_piotroski_plus_tests",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L204",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_rationale_2",
+      "target": "sweep_piotroski_plus",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_rationale_86",
+      "target": "sweep_piotroski_plus_tests",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus.py",
+      "source_location": "L86",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us",
+      "target": "warnings",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us",
+      "target": "duckdb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us",
+      "target": "numpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us",
+      "target": "pandas",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us",
+      "target": "piotroski_plus",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us",
+      "target": "sweep_piotroski_plus_us_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us_main",
+      "target": "sweep_piotroski_plus_us_main_tests",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L134",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us_main",
+      "target": "sweep_piotroski_plus_us_main_tests",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L176",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sweep_piotroski_plus_us_rationale_2",
+      "target": "sweep_piotroski_plus_us",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "sweep_piotroski_plus_us.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy",
+      "target": "concurrent_futures",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy",
+      "target": "sys",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy",
+      "target": "warnings",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy",
+      "target": "duckdb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy",
+      "target": "pandas",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy",
+      "target": "validate_current_ratio_proxy_truth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L63",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy_truth",
+      "target": "validate_current_ratio_proxy_truth_row",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy",
+      "target": "validate_current_ratio_proxy_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy_truth",
+      "target": "validate_current_ratio_proxy_truth_row",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy_main",
+      "target": "validate_current_ratio_proxy_truth",
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L109",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy_rationale_2",
+      "target": "validate_current_ratio_proxy",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "validate_current_ratio_proxy_rationale_64",
+      "target": "validate_current_ratio_proxy_truth",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "validate_current_ratio_proxy.py",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "verify_f_band_us_rationale_2",
+      "target": "verify_f_band_us",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "verify_f_band_us.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme",
+      "target": "readme_piotroski_liquidity_research_code",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_read_this_before_the_results",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_the_finding",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_papers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme",
+      "target": "reports_piotroski_liquidity_paper",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme",
+      "target": "reports_caveman_summary",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_code",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_method_notes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L101",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_metrics_that_failed_validation",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L114",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_limitations",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_references",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L157",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "readme_piotroski_liquidity_research_code",
+      "target": "readme_data",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L165",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary",
+      "target": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_warning_numbers_here_are_being_redone",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_the_big_thing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_how_we_find_out",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_why_score_work_it_not_find_winner_it_dodge_rock",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_why_not_work_in_loud_big_company",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_how_much_money_can_use_this",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_other_thing_we_find_good_company_good_stock",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L148",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_example_two_company_same_score_very_different",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L174",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_eleven_time_we_wrong_this_the_useful_part",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L191",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_average_lie_middle_tell_truth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L221",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_what_we_assume_if_assume_wrong_answer_wrong",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L240",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_where_data_come_from",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L256",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_key_insight_short_list",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L277",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_caveman_summary_caveman_paper_why_good_score_only_work_in_quiet_stock",
+      "target": "reports_caveman_summary_how_much_believe_this",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/CAVEMAN_SUMMARY.md",
+      "source_location": "L292",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper",
+      "target": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_evidence_from_us_equities_2016_2026_with_point_in_time_filing_dates",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_abstract",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_1_introduction",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_2_data",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L71",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_3_method",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_4_results",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L106",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_4_results",
+      "target": "reports_piotroski_liquidity_paper_4_1_the_premium_tracks_illiquidity_not_size",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L108",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_4_results",
+      "target": "reports_piotroski_liquidity_paper_4_2_liquidity_predicts_firm_quality_the_fang_noe_tice_channel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L142",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_4_results",
+      "target": "reports_piotroski_liquidity_paper_4_3_capacity",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L163",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_4_results",
+      "target": "reports_piotroski_liquidity_paper_4_4_the_f_score_does_not_improve_breakouts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L198",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_5_what_failed",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L212",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_6_limitations",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L249",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_liquidity_not_size_conditions_the_piotroski_f_score_premium",
+      "target": "reports_piotroski_liquidity_paper_7_conclusion",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L264",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "reports_piotroski_liquidity_paper_7_conclusion",
+      "target": "reports_piotroski_liquidity_paper_references",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "reports/PIOTROSKI_LIQUIDITY_PAPER.md",
+      "source_location": "L281",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements",
+      "target": "requirements_python_package_reference_market_crypto_forex_data",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_contents",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_1_general_global_market_data",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_2_india_nse_bse",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_3_china_a_shares",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_4_korea_japan_asia_pac",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_5_us_fundamentals_sec_edgar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L98",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_6_technical_analysis_indicators",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_7_backtesting_engines",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L121",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_8_portfolio_construction_risk",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L131",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_9_performance_analytics",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L138",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_10_options_derivatives_pricing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_11_ml_driven_quant_platforms",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L154",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_12_india_broker_execution_apis",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L161",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_13_screening_fundamentals_scrape",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L169",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_14_hong_kong_taiwan",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L175",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_15_australia_canada",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L184",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_16_brazil_latin_america",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L193",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_17_southeast_asia_asean",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L203",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_18_middle_east_africa",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L211",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_19_multi_market_aggregator_apis",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L220",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_20_cryptocurrency_data",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L231",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_21_forex_currency_data",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L244",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "requirements_python_package_reference_market_crypto_forex_data",
+      "target": "requirements_appendix_relevance_by_repo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "requirements.md",
+      "source_location": "L261",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "directed": false
+}
