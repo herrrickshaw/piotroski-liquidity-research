@@ -158,6 +158,44 @@ a mechanism that sounds right is not evidence.**
    genuinely illiquid names are untested.
 5. **Regime, not skill.** −28.1% in 2020, +14.4%/+7.1% in 2021–22, negative through 2024–25.
 
+## Literature context
+
+Entries from `market-pipeline/research/LITERATURE_REGISTER.md` (as of 2026-10-17) that bear on this repo's
+questions (liquidity, costs/capacity, survivorship, point-in-time discipline). Grades are the register's own
+EVIDENCE-GRADE wording; "no explicit grade" means the entry carries none. These are pointers, not
+validations of this repo's results.
+
+| Entry (ID) | Register grade | Relevance here |
+|---|---|---|
+| Baldi-Lanfranchi (2024), *Transaction-cost-aware Factors* (not on arXiv; AFA copy) | medium-strong | Momentum gross 0.64%/mo, cost 63bps/mo, net 0.01%/mo; relevant to whether `cost_vs_edge.py` conclusions depend on full-rebalance construction. The register marks full TCA implementation out of scope for signal-only repos. |
+| 2507.09196 Functionally generated portfolios under stochastic transaction costs | medium-weak (CAGR and max-DD only; no Sharpe/t-stat) | Time-varying spreads versus a static median cost; the register ties it to the Corwin-Schultz median in `cost_vs_edge.py`. |
+| 2607.06502 *What Useful Alphas?* (Chen & Welch) | strong (US only; costs borrowed, not modelled) | Universe filter matters: post-2005 median long-short 7bp in the "Standard" universe versus 19bp all stocks; profitability is the only family the register says stays healthy. Caution: US-only and the register notes the filter is a different one from this repo's illiquidity edge. |
+| 2603.20319 Implementation risk in portfolio backtesting | no explicit grade | Cost implementation alone made engines diverge by up to 3.71% under costs (zero-cost: agree). Relevant to the several cost conventions in this repo. |
+| 2609.04917 AI in equity and crypto markets (review) | "not applicable" (review, no panel) | Framing only: grade a method by the furthest link of the information-to-net-returns chain. The register says `cost_vs_edge.py` treats capacity as a first-class question. |
+| 0810.1922 Look-ahead benchmark bias (Daniel, Sornette, Wohrmann) | high | Benchmark-side survivorship, up to 8%/yr (CRSP 1926-2006). Register verified the India price panel keeps delisted names. |
+| 2603.19380 Survivorship bias, NIFTY Smallcap 250 | moderate-to-weak | Survivors 26.17%/yr vs 21.23% for all-ever members (+4.94pp), gross of costs; the register flags a self-contradicting p-value. Supports this repo's delisting-aware exits; weak on its own. |
+| 2609.26303 Target alignment, dilution, forecast selection | medium, with an honest null | Register uses it to argue equal-weight voting with the US-inverted Piotroski f_strong dilutes a multi-screen vote. |
+| 2507.07107 ML-enhanced multi-factor trading with bias correction | medium | Untradable (limit-locked) bars inflate IC by 18% and cut Sharpe by 0.44 on a limit-band market. |
+| 2610.06947 FactorBench | medium as a method, moderate as a result | Cost sensitivity: long-only CAGR stays positive to 50bps, long-short does not (as summarised in queue item 49). |
+
+## Open questions from literature
+
+Taken from `market-pipeline/research/BACKTEST_QUEUE.md`. None has been run for this repo; no results are implied.
+
+- Item 15: make the volume filter consistent. `backtest_liquidity_forward.py:74` uses `Volume >= 0` while `cost_vs_edge.py` and `backtest_piotroski_plus.py` use `Volume > 0`; and test whether excluding zero-volume or limit-locked bars changes IC and Sharpe.
+- Item 50: charge each rebalance at that month's Corwin-Schultz spread instead of the whole-sample median in `cost_vs_edge.py`. The queue predicts a larger net-edge cut for IN small caps (a prediction, untested).
+- Item 49: cost by holding-period sensitivity grid with a breakeven round-trip cost per filter.
+- Item 31: do any conclusions depend on which of the repo's five cost conventions a module used?
+- Item 36: re-score in a traded-value-coverage universe (value-weighted as well as equal-weighted) to see which cells are microcap effects.
+- Item 44: leave-one-screen-out test of the six-screen vote, including dropping the US-inverted Piotroski vote.
+- Items 5 and 11: replace the 120-day filing-lag proxy for India with real availability dates where obtainable, and label every fundamentals read as availability-time or reference-time.
+
+### Data-source gaps (TODO only; nothing implemented)
+- TODO: India filing dates (README uses a 120-day proxy). Check whether NSE/BSE corporate-announcement or XBRL result timestamps are open and bulk-fetchable.
+- TODO: lender profitability. ROCE for Indian lenders is wrong and unguarded (see warning above); consider bank-specific metrics from open filings.
+- TODO: illiquid-tail coverage ("genuinely illiquid names are untested"). Explore lower-liquidity NSE/BSE segments via public bhavcopy archives (the register notes bhavcopies keep delisted names).
+- TODO: corporate-action adjustment for raw-close panels (splits such as the GOLDBEES unit split), from public exchange corporate-action lists.
+
 ## References
 
 - Amihud (2002), *Journal of Financial Markets* 5(1) — illiquidity and stock returns
