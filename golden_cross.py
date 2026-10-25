@@ -64,7 +64,9 @@ def compute(df: Optional[pd.DataFrame], lookback: int = 60) -> dict:
     if not d200_t:
         return null
 
-    above = dma50 > dma200
+    # NaN while the 200DMA warms up -- a NaN>x comparison is False, which made the first
+    # valid bar look like an upward cross
+    above = (dma50 > dma200).where(dma200.notna())
     crossed_today = bool((d50_p <= d200_p) and (d50_t > d200_t))
 
     # bars since the most recent upward cross, within `lookback`
