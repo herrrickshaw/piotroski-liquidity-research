@@ -39,7 +39,6 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import duckdb
-import numpy as np
 import pandas as pd
 
 import piotroski_plus as PP
@@ -176,7 +175,7 @@ def main() -> int:
                    FROM '{PX}' WHERE Close>0 AND Volume>0)
         SELECT Symbol, median(tv) turnover FROM l WHERE rn<=60 GROUP BY 1""").df()
     m = d[["Symbol"]].drop_duplicates().merge(liq, on="Symbol", how="left")
-    print(f"\n  === did this actually reach the small names? ===")
+    print("\n  === did this actually reach the small names? ===")
     print(f"    tested symbols {len(m):,} | median turnover ${m.turnover.median()/1e6:,.1f}M/day")
     print(f"    full universe  {len(liq):,} | median turnover ${liq.turnover.median()/1e6:,.1f}M/day")
     print(f"    tested median sits at the {(liq.turnover < m.turnover.median()).mean()*100:.0f}th"

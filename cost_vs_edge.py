@@ -52,7 +52,6 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import duckdb
-import numpy as np
 import pandas as pd
 
 # 🔴 WAS global-market-data/cache_seed/ltm/US.parquet — an INTERRUPTED collection.

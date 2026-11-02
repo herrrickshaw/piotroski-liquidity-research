@@ -47,13 +47,11 @@ died, if it was collected) but it is not zero. Results remain an upper bound.
 """
 from __future__ import annotations
 
-import sys
 import warnings
 
 warnings.filterwarnings("ignore")
 
 import duckdb
-import numpy as np
 import pandas as pd
 
 import piotroski_plus as PP
