@@ -43,6 +43,7 @@ import numpy as np
 import pandas as pd
 
 import piotroski_plus as PP
+import sweep_common as SC
 
 FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_history/US.parquet"
 # 🔴 WAS global-market-data/cache_seed/ltm/US.parquet — an INTERRUPTED collection.
@@ -56,6 +57,35 @@ PX = "/Users/umashankar/repos/global-stock-screener/cache_seed/ltm/US.parquet"
 HOLD = 252
 TOP_N = 20
 REBAL = [pd.Timestamp(f"{y}-06-01") for y in range(2017, 2026)]
+
+
+def tests(cur, prv, hist) -> dict:
+    """All 12 tests as raw booleans (None = skipped) for one EDGAR ticker-year pair."""
+    d = {}
+    roa, roa_p = cur.net_income / cur.total_assets, prv.net_income / prv.total_assets
+    d["1_roa_positive"] = bool(roa > 0)
+    d["2_cfo_positive"] = bool(cur.cfo > 0)
+    d["3_roa_improving"] = bool(roa > roa_p)
+    d["4_accruals_cfo_gt_roa"] = bool(cur.cfo / cur.total_assets > roa)
+    # skipped, not failed, when long_term_debt is absent — a missing field is not
+    # evidence of rising leverage
+    d["5_leverage_falling"] = (
+        bool(cur.long_term_debt / cur.total_assets < prv.long_term_debt / prv.total_assets)
+        if pd.notna(cur.long_term_debt) and pd.notna(prv.long_term_debt) else None)
+    d["6_current_ratio_rising"] = bool(cur.current_assets / cur.current_liabilities
+                                       > prv.current_assets / prv.current_liabilities)
+    d["7_no_dilution"] = bool(cur.shares <= prv.shares * 1.01)
+    # skipped, not failed — a missing gross-profit line is not evidence of a
+    # falling margin
+    d["8_gross_margin_rising"] = (
+        bool(cur.gross_profit / cur.revenue > prv.gross_profit / prv.revenue)
+        if pd.notna(cur.gross_profit) and pd.notna(prv.gross_profit)
+        and cur.revenue and prv.revenue else None)
+    d["9_asset_turnover_rising"] = bool(cur.revenue / cur.total_assets
+                                        > prv.revenue / prv.total_assets)
+    d["10_roce_level"] = bool(cur.roce > PP.ROCE_LEVEL_HURDLE)
+    d["11_roce_stable"], d["12_roce_not_deteriorating"] = SC.roce_stability_tests(cur.roce, hist)
+    return d
 
 
 def main() -> int:
@@ -104,63 +134,9 @@ def main() -> int:
     print(f"  fundamentals: {len(f):,} ticker-years | {f.ticker.nunique():,} tickers | "
           f"{f.fy_end.min()} .. {f.fy_end.max()}")
 
-    ds = ", ".join(f"DATE '{d.date()}'" for d in REBAL)
-    con.execute(f"""
-    CREATE OR REPLACE TABLE px AS SELECT Date, Symbol, Close FROM '{PX}' WHERE Close>0;
-    CREATE OR REPLACE TABLE ca AS
-      SELECT Symbol, Date, CASE WHEN prev>0 AND (Close/prev-1 < -0.50 OR Close/prev-1 > 1.00)
-                                THEN 1 ELSE 0 END is_ca
-      FROM (SELECT Symbol, Date, Close, lag(Close) OVER (PARTITION BY Symbol ORDER BY Date) prev FROM px);
-    CREATE OR REPLACE TABLE fw AS
-      SELECT p.Symbol, p.Date, p.Close,
-             lead(p.Close,{HOLD}) OVER (PARTITION BY p.Symbol ORDER BY p.Date) fwd,
-             last_value(p.Close) OVER (PARTITION BY p.Symbol ORDER BY p.Date
-               ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) last_px,
-             sum(c.is_ca) OVER (PARTITION BY p.Symbol ORDER BY p.Date
-               ROWS BETWEEN 1 FOLLOWING AND {HOLD} FOLLOWING) ca_ahead
-      FROM px p JOIN ca c ON p.Symbol=c.Symbol AND p.Date=c.Date;
-    """)
-    ret = con.execute(f"""
-      WITH rb AS (SELECT unnest([{ds}]) t),
-      anchor AS (SELECT rb.t, min(fw.Date) d FROM rb JOIN fw ON fw.Date >= rb.t GROUP BY rb.t)
-      SELECT a.t, f.Symbol, coalesce(f.fwd, f.last_px)/f.Close - 1 fwd_ret
-      FROM anchor a JOIN fw f ON f.Date = a.d
-      WHERE coalesce(f.ca_ahead,0)=0 AND f.Close>0
-    """).df()
-    ret["t"] = pd.to_datetime(ret["t"])
-    rmap = {(r.Symbol, r.t): r.fwd_ret for r in ret.itertuples()}
+    ret = SC.forward_returns(con, PX, REBAL, HOLD)
+    rmap = SC.return_lookup(ret)
     print(f"  forward returns: {len(ret):,} rows over {ret.t.nunique()} rebalances\n")
-
-    def tests(cur, prv, hist):
-        d = {}
-        roa, roa_p = cur.net_income / cur.total_assets, prv.net_income / prv.total_assets
-        d["1_roa_positive"] = bool(roa > 0)
-        d["2_cfo_positive"] = bool(cur.cfo > 0)
-        d["3_roa_improving"] = bool(roa > roa_p)
-        d["4_accruals_cfo_gt_roa"] = bool(cur.cfo / cur.total_assets > roa)
-        # skipped, not failed, when long_term_debt is absent — a missing field is not
-        # evidence of rising leverage
-        d["5_leverage_falling"] = (
-            bool(cur.long_term_debt / cur.total_assets < prv.long_term_debt / prv.total_assets)
-            if pd.notna(cur.long_term_debt) and pd.notna(prv.long_term_debt) else None)
-        d["6_current_ratio_rising"] = bool(cur.current_assets / cur.current_liabilities
-                                           > prv.current_assets / prv.current_liabilities)
-        d["7_no_dilution"] = bool(cur.shares <= prv.shares * 1.01)
-        # skipped, not failed — a missing gross-profit line is not evidence of a
-        # falling margin
-        d["8_gross_margin_rising"] = (
-            bool(cur.gross_profit / cur.revenue > prv.gross_profit / prv.revenue)
-            if pd.notna(cur.gross_profit) and pd.notna(prv.gross_profit)
-            and cur.revenue and prv.revenue else None)
-        d["9_asset_turnover_rising"] = bool(cur.revenue / cur.total_assets
-                                            > prv.revenue / prv.total_assets)
-        d["10_roce_level"] = bool(cur.roce > PP.ROCE_LEVEL_HURDLE)
-        if len(hist) >= 3 and abs(np.mean(hist)) > 0.01:
-            d["11_roce_stable"] = bool(np.std(hist) / abs(np.mean(hist)) < PP.ROCE_CV_HURDLE)
-            d["12_roce_not_deteriorating"] = bool(cur.roce >= np.mean(hist))
-        else:
-            d["11_roce_stable"] = d["12_roce_not_deteriorating"] = None
-        return d
 
     rows = []
     by_t = {tk: g.reset_index(drop=True) for tk, g in f.groupby("ticker")}
@@ -174,43 +150,16 @@ def main() -> int:
             if fr is None or fr != fr:
                 continue
             r = tests(cur, prv, vis["roce"].dropna().tolist())
-            rec = {"Symbol": tk, "t": t, "fwd_ret": fr}
-            for p in PP.PRESETS:
-                rec[p] = PP.weigh(r, p)["pct"]
-            rows.append(rec)
+            rows.append({"Symbol": tk, "t": t, "fwd_ret": fr, **SC.score_vectors(r)})
     d = pd.DataFrame(rows)
     if d.empty:
         print("  no scored rows"); return 1
     print(f"  scored panel: {len(d):,} stock-years | {d.Symbol.nunique():,} symbols | "
           f"{d.t.nunique()} rebalances\n")
 
-    print(f"  === TOP-{TOP_N} PORTFOLIO PER VECTOR (12m hold, equal weight) ===")
-    print(f"  {'vector':11s} {'mean':>7s} {'median':>7s} {'vs univ':>8s} {'beat univ':>10s} {'worst':>7s}")
-    uni = d.groupby("t")["fwd_ret"].mean()
-    print(f"  {'[universe]':11s} {uni.mean()*100:>6.1f}% {uni.median()*100:>6.1f}% "
-          f"{'--':>8s} {'--':>10s} {uni.min()*100:>6.1f}%")
-    res = {}
-    for p in PP.PRESETS:
-        pr = []
-        for t, g in d.groupby("t"):
-            g2 = g[g[p].notna()]
-            if len(g2) < TOP_N:
-                continue
-            pr.append((t, g2.nlargest(TOP_N, p)["fwd_ret"].mean(), g2["fwd_ret"].mean()))
-        if not pr:
-            continue
-        x = pd.DataFrame(pr, columns=["t", "port", "uni"])
-        x["ex"] = x.port - x.uni
-        res[p] = x
-        print(f"  {p:11s} {x.port.mean()*100:>6.1f}% {x.port.median()*100:>6.1f}% "
-              f"{x.ex.mean()*100:>+7.1f}% {int((x.ex>0).sum()):>4}/{len(x):<5} {x.port.min()*100:>6.1f}%")
-
-    print("\n  === excess vs universe, year by year (read THIS, not the mean) ===")
-    print(f"  {'year':6s} " + " ".join(f"{p:>11s}" for p in res))
-    for t in sorted({t for p in res for t in res[p].t}):
-        print(f"  {t.year:<6} " + " ".join(
-            f"{res[p][res[p].t==t]['ex'].iloc[0]*100:>+10.1f}%"
-            if len(res[p][res[p].t == t]) else f"{'--':>11s}" for p in res))
+    res = SC.top_n_by_vector(d, TOP_N)
+    SC.print_top_n_table(d, res, TOP_N)
+    SC.print_excess_by_year(res, "excess vs universe, year by year (read THIS, not the mean)")
 
     print("\n  === is high-F actually GOOD in the US? mean AND median — they disagree ===")
     for lo, hi, lab in [(0, 40, "weak  (bottom)"), (40, 70, "middle"), (70, 101, "strong (top)")]:
