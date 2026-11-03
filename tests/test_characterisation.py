@@ -17,7 +17,7 @@ from tests.capture import capture_all
 # Long decimals are rounded to 10 significant digits before comparing: the last 1-2 digits of
 # DuckDB/pandas aggregates differ between library builds (local vs CI runner), which is
 # floating-point noise, not a behaviour change.
-_LONG_FLOAT = re.compile(r"-?\d+\.\d{6,}(?:[eE][-+]?\d+)?")
+_LONG_FLOAT = re.compile(r"-?\d+\.\d+(?:[eE][-+]?\d+)?")
 
 
 def _norm(obj):
