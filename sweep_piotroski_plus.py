@@ -56,9 +56,10 @@ import pandas as pd
 
 import piotroski_plus as PP
 import sweep_common as SC
+from data_paths import data_path
 
-FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_history/IN.parquet"
-PX = "/Users/umashankar/repos/global-market-data/cache_seed/ltm/IN.parquet"
+FUND = data_path("PLR_IN_FUND")
+PX = data_path("PLR_IN_PX")
 LAG_DAYS = 120
 HOLD = 252
 TOP_N = 20

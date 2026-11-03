@@ -55,7 +55,9 @@ warnings.filterwarnings("ignore")
 import duckdb
 import pandas as pd
 
-FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_history/IN.parquet"
+from data_paths import data_path
+
+FUND = data_path("PLR_IN_FUND")
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 60
 WORKERS = 6
 

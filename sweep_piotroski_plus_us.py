@@ -43,8 +43,9 @@ import pandas as pd
 
 import piotroski_plus as PP
 import sweep_common as SC
+from data_paths import data_path
 
-FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_history/US.parquet"
+FUND = data_path("PLR_US_FUND")
 # 🔴 WAS global-market-data/cache_seed/ltm/US.parquet — an INTERRUPTED collection.
 # It holds 5,358 symbols but is missing whole letter blocks (D-L, O, U-Z) and omits
 # S&P 500 names outright (CME, CMI absent; its most-covered symbols are all B's).
@@ -52,7 +53,7 @@ FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_hi
 # A,B,C,M,N,P,Q,R,S,T — a letter-biased subset, not a universe.
 # The complete panel is in global-stock-screener: 9,278 symbols, and overlap with EDGAR
 # fundamentals rises 2,281 (50%) -> 4,459 (97%).
-PX = "/Users/umashankar/repos/global-stock-screener/cache_seed/ltm/US.parquet"
+PX = data_path("PLR_US_PX")
 HOLD = 252
 TOP_N = 20
 REBAL = [pd.Timestamp(f"{y}-06-01") for y in range(2017, 2026)]
@@ -87,13 +88,14 @@ def tests(cur, prv, hist) -> dict:
     return d
 
 
-def main() -> int:
-    con = duckdb.connect()
+def load_fundamentals(con, fund_path: str | None = None) -> pd.DataFrame:
+    """EDGAR ticker-years passing the data filters, with capital employed and ROCE added."""
+    fund_path = fund_path or FUND
     f = con.execute(f"""
         SELECT ticker, CAST(fy_end AS DATE) fy_end, CAST(filed AS DATE) filed,
                ebit, net_income, cfo, total_assets, current_assets, current_liabilities,
                long_term_debt, shares, revenue, gross_profit, equity
-        FROM '{FUND}'
+        FROM '{fund_path}'
         WHERE ebit IS NOT NULL AND net_income IS NOT NULL AND cfo IS NOT NULL
           AND total_assets > 0 AND current_assets IS NOT NULL AND current_liabilities > 0
           AND shares > 0 AND revenue > 0
@@ -126,17 +128,11 @@ def main() -> int:
     f["ce"] = f.total_assets - f.current_liabilities
     f = f[f.ce > 0].copy()
     f["roce"] = f.ebit / f.ce
-    print(f"\n{'='*80}\n  PIOTROSKI PLUS — WEIGHT SWEEP | US (SEC EDGAR) | hold {HOLD}d"
-          f"\n{'='*80}")
-    print("  Educational/research only. NOT investment advice.")
-    print("  Entry gated on the REAL SEC filing date, not a reporting-lag assumption.\n")
-    print(f"  fundamentals: {len(f):,} ticker-years | {f.ticker.nunique():,} tickers | "
-          f"{f.fy_end.min()} .. {f.fy_end.max()}")
+    return f
 
-    ret = SC.forward_returns(con, PX, REBAL, HOLD)
-    rmap = SC.return_lookup(ret)
-    print(f"  forward returns: {len(ret):,} rows over {ret.t.nunique()} rebalances\n")
 
+def score_panel(f: pd.DataFrame, rmap: dict) -> pd.DataFrame:
+    """One row per (Symbol, rebalance): forward return plus every preset score, as-of the real filing date."""
     rows = []
     by_t = {tk: g.reset_index(drop=True) for tk, g in f.groupby("ticker")}
     for t in REBAL:
@@ -150,16 +146,11 @@ def main() -> int:
                 continue
             r = tests(cur, prv, vis["roce"].dropna().tolist())
             rows.append({"Symbol": tk, "t": t, "fwd_ret": fr, **SC.score_vectors(r)})
-    d = pd.DataFrame(rows)
-    if d.empty:
-        print("  no scored rows"); return 1
-    print(f"  scored panel: {len(d):,} stock-years | {d.Symbol.nunique():,} symbols | "
-          f"{d.t.nunique()} rebalances\n")
+    return pd.DataFrame(rows)
 
-    res = SC.top_n_by_vector(d, TOP_N)
-    SC.print_top_n_table(d, res, TOP_N)
-    SC.print_excess_by_year(res, "excess vs universe, year by year (read THIS, not the mean)")
 
+def print_f_bands(d: pd.DataFrame) -> None:
+    """Mean and median forward return for weak / middle / strong canonical F bands."""
     print("\n  === is high-F actually GOOD in the US? mean AND median — they disagree ===")
     for lo, hi, lab in [(0, 40, "weak  (bottom)"), (40, 70, "middle"), (70, 101, "strong (top)")]:
         s = d[(d.canonical >= lo) & (d.canonical < hi)]
@@ -167,23 +158,34 @@ def main() -> int:
             print(f"    canonical {lab:16s} n={len(s):>5,}  mean fwd {s.fwd_ret.mean()*100:>6.1f}%"
                   f"  median {s.fwd_ret.median()*100:>6.1f}%")
 
+
+def load_liquidity(con, px_path: str | None = None) -> pd.DataFrame:
+    """Median dollar turnover over the last 60 sessions per Symbol."""
+    px_path = px_path or PX
     # Did dropping the long_term_debt requirement actually reach smaller names? If the
     # sample is still mega-cap-only, the rerun proves nothing and must say so.
-    liq = con.execute(f"""
+    return con.execute(f"""
         WITH l AS (SELECT Symbol, Close*Volume tv,
                           row_number() OVER (PARTITION BY Symbol ORDER BY Date DESC) rn
-                   FROM '{PX}' WHERE Close>0 AND Volume>0)
+                   FROM '{px_path}' WHERE Close>0 AND Volume>0)
         SELECT Symbol, median(tv) turnover FROM l WHERE rn<=60 GROUP BY 1""").df()
+
+
+def print_reach(d: pd.DataFrame, liq: pd.DataFrame) -> pd.DataFrame:
+    """Report whether the tested names reach the small end; return d joined to liquidity."""
     m = d[["Symbol"]].drop_duplicates().merge(liq, on="Symbol", how="left")
     print("\n  === did this actually reach the small names? ===")
     print(f"    tested symbols {len(m):,} | median turnover ${m.turnover.median()/1e6:,.1f}M/day")
     print(f"    full universe  {len(liq):,} | median turnover ${liq.turnover.median()/1e6:,.1f}M/day")
     print(f"    tested median sits at the {(liq.turnover < m.turnover.median()).mean()*100:.0f}th"
           f" percentile of US liquidity  (was 80th when long_term_debt was required)")
-
-    print("\n  === F-score edge BY LIQUIDITY — Piotroski claims the edge is in SMALL names ===")
     dl = d.merge(liq, on="Symbol", how="left")
-    dl = dl[dl.turnover.notna()].copy()
+    return dl[dl.turnover.notna()].copy()
+
+
+def print_tier_edge(dl: pd.DataFrame) -> None:
+    """F-score edge by liquidity tercile; adds the `tier` column to dl when large enough."""
+    print("\n  === F-score edge BY LIQUIDITY — Piotroski claims the edge is in SMALL names ===")
     if len(dl) > 200:
         dl["tier"] = pd.qcut(dl.turnover, 3, labels=["SMALL", "MID", "LARGE"])
         print(f"    {'tier':7s} {'n':>6s} {'F>=70 mean':>11s} {'F>=70 med':>10s} "
@@ -199,6 +201,9 @@ def main() -> int:
         print("    (median edge = high-F median minus low-F median. Piotroski predicts")
         print("     this is POSITIVE and LARGEST in SMALL.)")
 
+
+def print_within_tier(dl: pd.DataFrame) -> None:
+    """Rank within each liquidity tier (top-10 per tier per year); median edge is the headline."""
     # ── rank WITHIN tier, not across ──────────────────────────────────────────
     # THE POINT OF THIS RUN. The all-sample top-20 lost the universe in every vector,
     # and the tier table above says why: the edge is +14.4% median in SMALL and -7.3%
@@ -233,6 +238,36 @@ def main() -> int:
                   f"{edge:>+8.1f}% {x.pmean.mean()*100:>9.1f}% "
                   f"{int((x.pm > x.um).sum()):>4}/{len(x):<4}")
         print()
+
+
+def main() -> int:
+    con = duckdb.connect()
+    f = load_fundamentals(con)
+    print(f"\n{'='*80}\n  PIOTROSKI PLUS — WEIGHT SWEEP | US (SEC EDGAR) | hold {HOLD}d"
+          f"\n{'='*80}")
+    print("  Educational/research only. NOT investment advice.")
+    print("  Entry gated on the REAL SEC filing date, not a reporting-lag assumption.\n")
+    print(f"  fundamentals: {len(f):,} ticker-years | {f.ticker.nunique():,} tickers | "
+          f"{f.fy_end.min()} .. {f.fy_end.max()}")
+
+    ret = SC.forward_returns(con, PX, REBAL, HOLD)
+    rmap = SC.return_lookup(ret)
+    print(f"  forward returns: {len(ret):,} rows over {ret.t.nunique()} rebalances\n")
+
+    d = score_panel(f, rmap)
+    if d.empty:
+        print("  no scored rows"); return 1
+    print(f"  scored panel: {len(d):,} stock-years | {d.Symbol.nunique():,} symbols | "
+          f"{d.t.nunique()} rebalances\n")
+
+    res = SC.top_n_by_vector(d, TOP_N)
+    SC.print_top_n_table(d, res, TOP_N)
+    SC.print_excess_by_year(res, "excess vs universe, year by year (read THIS, not the mean)")
+    print_f_bands(d)
+
+    dl = print_reach(d, load_liquidity(con))
+    print_tier_edge(dl)
+    print_within_tier(dl)
     d.to_csv("reports/sweep_piotroski_plus_us.csv", index=False)
     print("\n  -> reports/sweep_piotroski_plus_us.csv")
     return 0

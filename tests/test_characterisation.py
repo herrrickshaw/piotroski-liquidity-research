@@ -32,3 +32,12 @@ def test_us_sweep_stdout_and_csv_unchanged(current):
 
 def test_india_sweep_stdout_and_csv_unchanged(current):
     assert current["sweep_in"] == GOLDEN["sweep_in"]
+
+
+def test_daily_breakout_stdout_and_csv_unchanged():
+    from tests import synth
+    from tests.capture import run_sweep
+
+    golden = json.loads((Path(__file__).parent / "golden" / "daily_breakout.json").read_text())
+    now = json.loads(json.dumps(run_sweep("daily_breakout_combo_us", synth.us_panels), sort_keys=True))
+    assert now == golden
