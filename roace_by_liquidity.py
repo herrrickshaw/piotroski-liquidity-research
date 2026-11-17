@@ -57,7 +57,9 @@ warnings.filterwarnings("ignore")
 import duckdb
 import pandas as pd
 
-PARQUET = "/Users/umashankar/repos/global-market-data/cache_seed/ltm/IN.parquet"
+from data_paths import data_path
+
+PARQUET = data_path("PLR_IN_PX")
 PER_TIER = int(sys.argv[1]) if len(sys.argv) > 1 else 45
 WORKERS = 6          # modest: yfinance rate-limits, and this is a sample not a sweep
 

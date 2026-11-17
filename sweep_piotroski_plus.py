@@ -47,19 +47,19 @@ died, if it was collected) but it is not zero. Results remain an upper bound.
 """
 from __future__ import annotations
 
-import sys
 import warnings
 
 warnings.filterwarnings("ignore")
 
 import duckdb
-import numpy as np
 import pandas as pd
 
 import piotroski_plus as PP
+import sweep_common as SC
+from data_paths import data_path
 
-FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_history/IN.parquet"
-PX = "/Users/umashankar/repos/global-market-data/cache_seed/ltm/IN.parquet"
+FUND = data_path("PLR_IN_FUND")
+PX = data_path("PLR_IN_PX")
 LAG_DAYS = 120
 HOLD = 252
 TOP_N = 20
@@ -80,6 +80,17 @@ def load():
                + f["borrowings"].fillna(0) + f["other_liab"].fillna(0))
     f = f[f["ta"] > 0].sort_values(["ticker", "fy_end"])
     return con, f
+
+
+def _gross_margin(r):
+    """Gross margin from screener.in raw-cost lines; None unless a manufacturer (rm/sales >= 0.30)."""
+    if not (pd.notna(r.raw_material_cost) and r.revenue and r.revenue > 0):
+        return None
+    if r.raw_material_cost / r.revenue < 0.30:      # not a manufacturer
+        return None
+    cogs = (r.raw_material_cost - (r.change_in_inventory or 0)
+            + (r.power_and_fuel or 0) + (r.other_mfr_exp or 0))
+    return (r.revenue - cogs) / r.revenue
 
 
 def tests(cur, prv, hist) -> dict:
@@ -128,27 +139,14 @@ def tests(cur, prv, hist) -> dict:
     # yfinance's true Gross Profit at -0.1pp error (n=50). Below that it is skipped, not
     # guessed: screener.in never splits Employee Cost into direct vs SG&A, so a services
     # COGS cannot be built from this source.
-    def _gm(r):
-        if not (pd.notna(r.raw_material_cost) and r.revenue and r.revenue > 0):
-            return None
-        if r.raw_material_cost / r.revenue < 0.30:      # not a manufacturer
-            return None
-        cogs = (r.raw_material_cost - (r.change_in_inventory or 0)
-                + (r.power_and_fuel or 0) + (r.other_mfr_exp or 0))
-        return (r.revenue - cogs) / r.revenue
-    gm, gm_p = _gm(cur), _gm(prv)
+    gm, gm_p = _gross_margin(cur), _gross_margin(prv)
     d["8_gross_margin_rising"] = bool(gm > gm_p) if None not in (gm, gm_p) else None
     at = cur.revenue / cur.ta if pd.notna(cur.revenue) and cur.ta else None
     at_p = prv.revenue / prv.ta if pd.notna(prv.revenue) and prv.ta else None
     d["9_asset_turnover_rising"] = bool(at > at_p) if None not in (at, at_p) else None
 
     d["10_roce_level"] = bool(cur.roce > ROCE_LEVEL_HURDLE) if pd.notna(cur.roce) else None
-    if len(hist) >= 3 and abs(np.mean(hist)) > 0.01:
-        cv = float(np.std(hist) / abs(np.mean(hist)))
-        d["11_roce_stable"] = bool(cv < ROCE_CV_HURDLE)
-        d["12_roce_not_deteriorating"] = bool(cur.roce >= np.mean(hist))
-    else:
-        d["11_roce_stable"] = d["12_roce_not_deteriorating"] = None
+    d["11_roce_stable"], d["12_roce_not_deteriorating"] = SC.roce_stability_tests(cur.roce, hist)
     return d
 
 
@@ -164,31 +162,8 @@ def main() -> int:
     rebals = [pd.Timestamp(f"{y}-08-01") for y in range(2018, 2026)]
     # forward returns anchored to the first trading day >= t (2021-08-01 was a SUNDAY;
     # an exact-date join silently drops such rebalances)
-    ds = ", ".join(f"DATE '{d.date()}'" for d in rebals)
-    con.execute(f"""
-    CREATE OR REPLACE TABLE px AS SELECT Date, Symbol, Close FROM '{PX}' WHERE Close>0;
-    CREATE OR REPLACE TABLE ca AS
-      SELECT Symbol, Date, CASE WHEN prev>0 AND (Close/prev-1 < -0.50 OR Close/prev-1 > 1.00)
-                                THEN 1 ELSE 0 END is_ca
-      FROM (SELECT Symbol, Date, Close, lag(Close) OVER (PARTITION BY Symbol ORDER BY Date) prev FROM px);
-    CREATE OR REPLACE TABLE fw AS
-      SELECT p.Symbol, p.Date, p.Close,
-             lead(p.Close,{HOLD}) OVER (PARTITION BY p.Symbol ORDER BY p.Date) fwd,
-             last_value(p.Close) OVER (PARTITION BY p.Symbol ORDER BY p.Date
-               ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) last_px,
-             sum(c.is_ca) OVER (PARTITION BY p.Symbol ORDER BY p.Date
-               ROWS BETWEEN 1 FOLLOWING AND {HOLD} FOLLOWING) ca_ahead
-      FROM px p JOIN ca c ON p.Symbol=c.Symbol AND p.Date=c.Date;
-    """)
-    ret = con.execute(f"""
-      WITH rb AS (SELECT unnest([{ds}]) t),
-      anchor AS (SELECT rb.t, min(fw.Date) d FROM rb JOIN fw ON fw.Date >= rb.t GROUP BY rb.t)
-      SELECT a.t, f.Symbol, coalesce(f.fwd, f.last_px)/f.Close - 1 fwd_ret
-      FROM anchor a JOIN fw f ON f.Date = a.d
-      WHERE coalesce(f.ca_ahead,0)=0 AND f.Close>0
-    """).df()
-    ret["t"] = pd.to_datetime(ret["t"])
-    rmap = {(r.Symbol, r.t): r.fwd_ret for r in ret.itertuples()}
+    ret = SC.forward_returns(con, PX, rebals, HOLD)
+    rmap = SC.return_lookup(ret)
     print(f"  forward returns: {len(ret):,} rows over {ret.t.nunique()} rebalances\n")
 
     rows = []
@@ -205,45 +180,16 @@ def main() -> int:
             fr = rmap.get((tk, t))
             if fr is None or fr != fr:
                 continue
-            rec = {"Symbol": tk, "t": t, "fwd_ret": fr}
-            for p in PP.PRESETS:
-                rec[p] = PP.weigh(r, p)["pct"]
-            rows.append(rec)
+            rows.append({"Symbol": tk, "t": t, "fwd_ret": fr, **SC.score_vectors(r)})
     d = pd.DataFrame(rows)
     if d.empty:
         print("  no scored rows"); return 1
     print(f"  scored panel: {len(d):,} stock-years | {d.Symbol.nunique():,} symbols | "
           f"{d.t.nunique()} rebalances\n")
 
-    print(f"  === TOP-{TOP_N} PORTFOLIO PER VECTOR (12m hold, equal weight) ===")
-    print(f"  {'vector':11s} {'mean':>7s} {'median':>7s} {'vs univ':>8s} {'beat univ':>10s} {'worst':>7s}")
-    uni = d.groupby("t")["fwd_ret"].mean()
-    print(f"  {'[universe]':11s} {uni.mean()*100:>6.1f}% {uni.median()*100:>6.1f}% "
-          f"{'--':>8s} {'--':>10s} {uni.min()*100:>6.1f}%")
-    res = {}
-    for p in PP.PRESETS:
-        pr = []
-        for t, g in d.groupby("t"):
-            g2 = g[g[p].notna()]
-            if len(g2) < TOP_N:
-                continue
-            pr.append((t, g2.nlargest(TOP_N, p)["fwd_ret"].mean(), g2["fwd_ret"].mean()))
-        if not pr:
-            continue
-        x = pd.DataFrame(pr, columns=["t", "port", "uni"])
-        x["ex"] = x.port - x.uni
-        res[p] = x
-        print(f"  {p:11s} {x.port.mean()*100:>6.1f}% {x.port.median()*100:>6.1f}% "
-              f"{x.ex.mean()*100:>+7.1f}% {int((x.ex>0).sum()):>4}/{len(x):<5} {x.port.min()*100:>6.1f}%")
-
-    print("\n  === excess vs universe, year by year — where a 'winner' is made or broken ===")
-    print(f"  {'year':6s} " + " ".join(f"{p:>11s}" for p in res))
-    for t in sorted({t for p in res for t in res[p].t}):
-        cells = []
-        for p in res:
-            v = res[p][res[p].t == t]["ex"]
-            cells.append(f"{v.iloc[0]*100:>+10.1f}%" if len(v) else f"{'--':>11s}")
-        print(f"  {t.year:<6} " + " ".join(cells))
+    res = SC.top_n_by_vector(d, TOP_N)
+    SC.print_top_n_table(d, res, TOP_N)
+    SC.print_excess_by_year(res, "excess vs universe, year by year — where a 'winner' is made or broken")
 
     n = max(len(x) for x in res.values()) if res else 0
     print(f"\n  {n} rebalances. canonical is the CONTROL: a weighted vector that cannot")

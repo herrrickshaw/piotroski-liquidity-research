@@ -39,12 +39,13 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import duckdb
-import numpy as np
 import pandas as pd
 
 import piotroski_plus as PP
+import sweep_common as SC
+from data_paths import data_path
 
-FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_history/US.parquet"
+FUND = data_path("PLR_US_FUND")
 # 🔴 WAS global-market-data/cache_seed/ltm/US.parquet — an INTERRUPTED collection.
 # It holds 5,358 symbols but is missing whole letter blocks (D-L, O, U-Z) and omits
 # S&P 500 names outright (CME, CMI absent; its most-covered symbols are all B's).
@@ -52,19 +53,49 @@ FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_hi
 # A,B,C,M,N,P,Q,R,S,T — a letter-biased subset, not a universe.
 # The complete panel is in global-stock-screener: 9,278 symbols, and overlap with EDGAR
 # fundamentals rises 2,281 (50%) -> 4,459 (97%).
-PX = "/Users/umashankar/repos/global-stock-screener/cache_seed/ltm/US.parquet"
+PX = data_path("PLR_US_PX")
 HOLD = 252
 TOP_N = 20
 REBAL = [pd.Timestamp(f"{y}-06-01") for y in range(2017, 2026)]
 
 
-def main() -> int:
-    con = duckdb.connect()
+def tests(cur, prv, hist) -> dict:
+    """All 12 tests as raw booleans (None = skipped) for one EDGAR ticker-year pair."""
+    d = {}
+    roa, roa_p = cur.net_income / cur.total_assets, prv.net_income / prv.total_assets
+    d["1_roa_positive"] = bool(roa > 0)
+    d["2_cfo_positive"] = bool(cur.cfo > 0)
+    d["3_roa_improving"] = bool(roa > roa_p)
+    d["4_accruals_cfo_gt_roa"] = bool(cur.cfo / cur.total_assets > roa)
+    # skipped, not failed, when long_term_debt is absent — a missing field is not
+    # evidence of rising leverage
+    d["5_leverage_falling"] = (
+        bool(cur.long_term_debt / cur.total_assets < prv.long_term_debt / prv.total_assets)
+        if pd.notna(cur.long_term_debt) and pd.notna(prv.long_term_debt) else None)
+    d["6_current_ratio_rising"] = bool(cur.current_assets / cur.current_liabilities
+                                       > prv.current_assets / prv.current_liabilities)
+    d["7_no_dilution"] = bool(cur.shares <= prv.shares * 1.01)
+    # skipped, not failed — a missing gross-profit line is not evidence of a
+    # falling margin
+    d["8_gross_margin_rising"] = (
+        bool(cur.gross_profit / cur.revenue > prv.gross_profit / prv.revenue)
+        if pd.notna(cur.gross_profit) and pd.notna(prv.gross_profit)
+        and cur.revenue and prv.revenue else None)
+    d["9_asset_turnover_rising"] = bool(cur.revenue / cur.total_assets
+                                        > prv.revenue / prv.total_assets)
+    d["10_roce_level"] = bool(cur.roce > PP.ROCE_LEVEL_HURDLE)
+    d["11_roce_stable"], d["12_roce_not_deteriorating"] = SC.roce_stability_tests(cur.roce, hist)
+    return d
+
+
+def load_fundamentals(con, fund_path: str | None = None) -> pd.DataFrame:
+    """EDGAR ticker-years passing the data filters, with capital employed and ROCE added."""
+    fund_path = fund_path or FUND
     f = con.execute(f"""
         SELECT ticker, CAST(fy_end AS DATE) fy_end, CAST(filed AS DATE) filed,
                ebit, net_income, cfo, total_assets, current_assets, current_liabilities,
                long_term_debt, shares, revenue, gross_profit, equity
-        FROM '{FUND}'
+        FROM '{fund_path}'
         WHERE ebit IS NOT NULL AND net_income IS NOT NULL AND cfo IS NOT NULL
           AND total_assets > 0 AND current_assets IS NOT NULL AND current_liabilities > 0
           AND shares > 0 AND revenue > 0
@@ -97,71 +128,11 @@ def main() -> int:
     f["ce"] = f.total_assets - f.current_liabilities
     f = f[f.ce > 0].copy()
     f["roce"] = f.ebit / f.ce
-    print(f"\n{'='*80}\n  PIOTROSKI PLUS — WEIGHT SWEEP | US (SEC EDGAR) | hold {HOLD}d"
-          f"\n{'='*80}")
-    print("  Educational/research only. NOT investment advice.")
-    print("  Entry gated on the REAL SEC filing date, not a reporting-lag assumption.\n")
-    print(f"  fundamentals: {len(f):,} ticker-years | {f.ticker.nunique():,} tickers | "
-          f"{f.fy_end.min()} .. {f.fy_end.max()}")
+    return f
 
-    ds = ", ".join(f"DATE '{d.date()}'" for d in REBAL)
-    con.execute(f"""
-    CREATE OR REPLACE TABLE px AS SELECT Date, Symbol, Close FROM '{PX}' WHERE Close>0;
-    CREATE OR REPLACE TABLE ca AS
-      SELECT Symbol, Date, CASE WHEN prev>0 AND (Close/prev-1 < -0.50 OR Close/prev-1 > 1.00)
-                                THEN 1 ELSE 0 END is_ca
-      FROM (SELECT Symbol, Date, Close, lag(Close) OVER (PARTITION BY Symbol ORDER BY Date) prev FROM px);
-    CREATE OR REPLACE TABLE fw AS
-      SELECT p.Symbol, p.Date, p.Close,
-             lead(p.Close,{HOLD}) OVER (PARTITION BY p.Symbol ORDER BY p.Date) fwd,
-             last_value(p.Close) OVER (PARTITION BY p.Symbol ORDER BY p.Date
-               ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) last_px,
-             sum(c.is_ca) OVER (PARTITION BY p.Symbol ORDER BY p.Date
-               ROWS BETWEEN 1 FOLLOWING AND {HOLD} FOLLOWING) ca_ahead
-      FROM px p JOIN ca c ON p.Symbol=c.Symbol AND p.Date=c.Date;
-    """)
-    ret = con.execute(f"""
-      WITH rb AS (SELECT unnest([{ds}]) t),
-      anchor AS (SELECT rb.t, min(fw.Date) d FROM rb JOIN fw ON fw.Date >= rb.t GROUP BY rb.t)
-      SELECT a.t, f.Symbol, coalesce(f.fwd, f.last_px)/f.Close - 1 fwd_ret
-      FROM anchor a JOIN fw f ON f.Date = a.d
-      WHERE coalesce(f.ca_ahead,0)=0 AND f.Close>0
-    """).df()
-    ret["t"] = pd.to_datetime(ret["t"])
-    rmap = {(r.Symbol, r.t): r.fwd_ret for r in ret.itertuples()}
-    print(f"  forward returns: {len(ret):,} rows over {ret.t.nunique()} rebalances\n")
 
-    def tests(cur, prv, hist):
-        d = {}
-        roa, roa_p = cur.net_income / cur.total_assets, prv.net_income / prv.total_assets
-        d["1_roa_positive"] = bool(roa > 0)
-        d["2_cfo_positive"] = bool(cur.cfo > 0)
-        d["3_roa_improving"] = bool(roa > roa_p)
-        d["4_accruals_cfo_gt_roa"] = bool(cur.cfo / cur.total_assets > roa)
-        # skipped, not failed, when long_term_debt is absent — a missing field is not
-        # evidence of rising leverage
-        d["5_leverage_falling"] = (
-            bool(cur.long_term_debt / cur.total_assets < prv.long_term_debt / prv.total_assets)
-            if pd.notna(cur.long_term_debt) and pd.notna(prv.long_term_debt) else None)
-        d["6_current_ratio_rising"] = bool(cur.current_assets / cur.current_liabilities
-                                           > prv.current_assets / prv.current_liabilities)
-        d["7_no_dilution"] = bool(cur.shares <= prv.shares * 1.01)
-        # skipped, not failed — a missing gross-profit line is not evidence of a
-        # falling margin
-        d["8_gross_margin_rising"] = (
-            bool(cur.gross_profit / cur.revenue > prv.gross_profit / prv.revenue)
-            if pd.notna(cur.gross_profit) and pd.notna(prv.gross_profit)
-            and cur.revenue and prv.revenue else None)
-        d["9_asset_turnover_rising"] = bool(cur.revenue / cur.total_assets
-                                            > prv.revenue / prv.total_assets)
-        d["10_roce_level"] = bool(cur.roce > PP.ROCE_LEVEL_HURDLE)
-        if len(hist) >= 3 and abs(np.mean(hist)) > 0.01:
-            d["11_roce_stable"] = bool(np.std(hist) / abs(np.mean(hist)) < PP.ROCE_CV_HURDLE)
-            d["12_roce_not_deteriorating"] = bool(cur.roce >= np.mean(hist))
-        else:
-            d["11_roce_stable"] = d["12_roce_not_deteriorating"] = None
-        return d
-
+def score_panel(f: pd.DataFrame, rmap: dict) -> pd.DataFrame:
+    """One row per (Symbol, rebalance): forward return plus every preset score, as-of the real filing date."""
     rows = []
     by_t = {tk: g.reset_index(drop=True) for tk, g in f.groupby("ticker")}
     for t in REBAL:
@@ -174,44 +145,12 @@ def main() -> int:
             if fr is None or fr != fr:
                 continue
             r = tests(cur, prv, vis["roce"].dropna().tolist())
-            rec = {"Symbol": tk, "t": t, "fwd_ret": fr}
-            for p in PP.PRESETS:
-                rec[p] = PP.weigh(r, p)["pct"]
-            rows.append(rec)
-    d = pd.DataFrame(rows)
-    if d.empty:
-        print("  no scored rows"); return 1
-    print(f"  scored panel: {len(d):,} stock-years | {d.Symbol.nunique():,} symbols | "
-          f"{d.t.nunique()} rebalances\n")
+            rows.append({"Symbol": tk, "t": t, "fwd_ret": fr, **SC.score_vectors(r)})
+    return pd.DataFrame(rows)
 
-    print(f"  === TOP-{TOP_N} PORTFOLIO PER VECTOR (12m hold, equal weight) ===")
-    print(f"  {'vector':11s} {'mean':>7s} {'median':>7s} {'vs univ':>8s} {'beat univ':>10s} {'worst':>7s}")
-    uni = d.groupby("t")["fwd_ret"].mean()
-    print(f"  {'[universe]':11s} {uni.mean()*100:>6.1f}% {uni.median()*100:>6.1f}% "
-          f"{'--':>8s} {'--':>10s} {uni.min()*100:>6.1f}%")
-    res = {}
-    for p in PP.PRESETS:
-        pr = []
-        for t, g in d.groupby("t"):
-            g2 = g[g[p].notna()]
-            if len(g2) < TOP_N:
-                continue
-            pr.append((t, g2.nlargest(TOP_N, p)["fwd_ret"].mean(), g2["fwd_ret"].mean()))
-        if not pr:
-            continue
-        x = pd.DataFrame(pr, columns=["t", "port", "uni"])
-        x["ex"] = x.port - x.uni
-        res[p] = x
-        print(f"  {p:11s} {x.port.mean()*100:>6.1f}% {x.port.median()*100:>6.1f}% "
-              f"{x.ex.mean()*100:>+7.1f}% {int((x.ex>0).sum()):>4}/{len(x):<5} {x.port.min()*100:>6.1f}%")
 
-    print("\n  === excess vs universe, year by year (read THIS, not the mean) ===")
-    print(f"  {'year':6s} " + " ".join(f"{p:>11s}" for p in res))
-    for t in sorted({t for p in res for t in res[p].t}):
-        print(f"  {t.year:<6} " + " ".join(
-            f"{res[p][res[p].t==t]['ex'].iloc[0]*100:>+10.1f}%"
-            if len(res[p][res[p].t == t]) else f"{'--':>11s}" for p in res))
-
+def print_f_bands(d: pd.DataFrame) -> None:
+    """Mean and median forward return for weak / middle / strong canonical F bands."""
     print("\n  === is high-F actually GOOD in the US? mean AND median — they disagree ===")
     for lo, hi, lab in [(0, 40, "weak  (bottom)"), (40, 70, "middle"), (70, 101, "strong (top)")]:
         s = d[(d.canonical >= lo) & (d.canonical < hi)]
@@ -219,23 +158,34 @@ def main() -> int:
             print(f"    canonical {lab:16s} n={len(s):>5,}  mean fwd {s.fwd_ret.mean()*100:>6.1f}%"
                   f"  median {s.fwd_ret.median()*100:>6.1f}%")
 
+
+def load_liquidity(con, px_path: str | None = None) -> pd.DataFrame:
+    """Median dollar turnover over the last 60 sessions per Symbol."""
+    px_path = px_path or PX
     # Did dropping the long_term_debt requirement actually reach smaller names? If the
     # sample is still mega-cap-only, the rerun proves nothing and must say so.
-    liq = con.execute(f"""
+    return con.execute(f"""
         WITH l AS (SELECT Symbol, Close*Volume tv,
                           row_number() OVER (PARTITION BY Symbol ORDER BY Date DESC) rn
-                   FROM '{PX}' WHERE Close>0 AND Volume>0)
+                   FROM '{px_path}' WHERE Close>0 AND Volume>0)
         SELECT Symbol, median(tv) turnover FROM l WHERE rn<=60 GROUP BY 1""").df()
+
+
+def print_reach(d: pd.DataFrame, liq: pd.DataFrame) -> pd.DataFrame:
+    """Report whether the tested names reach the small end; return d joined to liquidity."""
     m = d[["Symbol"]].drop_duplicates().merge(liq, on="Symbol", how="left")
-    print(f"\n  === did this actually reach the small names? ===")
+    print("\n  === did this actually reach the small names? ===")
     print(f"    tested symbols {len(m):,} | median turnover ${m.turnover.median()/1e6:,.1f}M/day")
     print(f"    full universe  {len(liq):,} | median turnover ${liq.turnover.median()/1e6:,.1f}M/day")
     print(f"    tested median sits at the {(liq.turnover < m.turnover.median()).mean()*100:.0f}th"
           f" percentile of US liquidity  (was 80th when long_term_debt was required)")
-
-    print("\n  === F-score edge BY LIQUIDITY — Piotroski claims the edge is in SMALL names ===")
     dl = d.merge(liq, on="Symbol", how="left")
-    dl = dl[dl.turnover.notna()].copy()
+    return dl[dl.turnover.notna()].copy()
+
+
+def print_tier_edge(dl: pd.DataFrame) -> None:
+    """F-score edge by liquidity tercile; adds the `tier` column to dl when large enough."""
+    print("\n  === F-score edge BY LIQUIDITY — Piotroski claims the edge is in SMALL names ===")
     if len(dl) > 200:
         dl["tier"] = pd.qcut(dl.turnover, 3, labels=["SMALL", "MID", "LARGE"])
         print(f"    {'tier':7s} {'n':>6s} {'F>=70 mean':>11s} {'F>=70 med':>10s} "
@@ -251,6 +201,9 @@ def main() -> int:
         print("    (median edge = high-F median minus low-F median. Piotroski predicts")
         print("     this is POSITIVE and LARGEST in SMALL.)")
 
+
+def print_within_tier(dl: pd.DataFrame) -> None:
+    """Rank within each liquidity tier (top-10 per tier per year); median edge is the headline."""
     # ── rank WITHIN tier, not across ──────────────────────────────────────────
     # THE POINT OF THIS RUN. The all-sample top-20 lost the universe in every vector,
     # and the tier table above says why: the edge is +14.4% median in SMALL and -7.3%
@@ -285,6 +238,36 @@ def main() -> int:
                   f"{edge:>+8.1f}% {x.pmean.mean()*100:>9.1f}% "
                   f"{int((x.pm > x.um).sum()):>4}/{len(x):<4}")
         print()
+
+
+def main() -> int:
+    con = duckdb.connect()
+    f = load_fundamentals(con)
+    print(f"\n{'='*80}\n  PIOTROSKI PLUS — WEIGHT SWEEP | US (SEC EDGAR) | hold {HOLD}d"
+          f"\n{'='*80}")
+    print("  Educational/research only. NOT investment advice.")
+    print("  Entry gated on the REAL SEC filing date, not a reporting-lag assumption.\n")
+    print(f"  fundamentals: {len(f):,} ticker-years | {f.ticker.nunique():,} tickers | "
+          f"{f.fy_end.min()} .. {f.fy_end.max()}")
+
+    ret = SC.forward_returns(con, PX, REBAL, HOLD)
+    rmap = SC.return_lookup(ret)
+    print(f"  forward returns: {len(ret):,} rows over {ret.t.nunique()} rebalances\n")
+
+    d = score_panel(f, rmap)
+    if d.empty:
+        print("  no scored rows"); return 1
+    print(f"  scored panel: {len(d):,} stock-years | {d.Symbol.nunique():,} symbols | "
+          f"{d.t.nunique()} rebalances\n")
+
+    res = SC.top_n_by_vector(d, TOP_N)
+    SC.print_top_n_table(d, res, TOP_N)
+    SC.print_excess_by_year(res, "excess vs universe, year by year (read THIS, not the mean)")
+    print_f_bands(d)
+
+    dl = print_reach(d, load_liquidity(con))
+    print_tier_edge(dl)
+    print_within_tier(dl)
     d.to_csv("reports/sweep_piotroski_plus_us.csv", index=False)
     print("\n  -> reports/sweep_piotroski_plus_us.csv")
     return 0

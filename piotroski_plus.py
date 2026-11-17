@@ -63,11 +63,14 @@ yfinance .info) never produced an F-score or a ROCE.
 """
 from __future__ import annotations
 
+import logging
 import warnings
 
 warnings.filterwarnings("ignore")
 
 import numpy as np
+
+log = logging.getLogger(__name__)
 
 ROCE_LEVEL_HURDLE = 0.15     # 15% on capital employed
 ROCE_CV_HURDLE = 0.30        # sd/mean across ~5y
@@ -163,6 +166,106 @@ def _at(s, c):
     return float(s[c]) if s is not None and c in s.index else None
 
 
+def _ratio(num, den):
+    """num/den, or None when either is missing or the denominator is zero."""
+    return num / den if num is not None and den else None
+
+
+def _gt(a, b):
+    """a > b, or None (test skipped) when either side is missing."""
+    return a > b if a is not None and b is not None else None
+
+
+def _lt(a, b):
+    """a < b, or None (test skipped) when either side is missing."""
+    return a < b if a is not None and b is not None else None
+
+
+class _Tally:
+    """Counts passed/run tests and records each outcome (None = skipped) by name."""
+
+    def __init__(self, detail: dict):
+        self.passed = 0
+        self.ran = 0
+        self.detail = detail
+
+    def __call__(self, name, cond):
+        if cond is None:
+            self.detail[name] = None
+            return
+        self.ran += 1
+        self.passed += 1 if cond else 0
+        self.detail[name] = bool(cond)
+
+
+def _statements(ticker):
+    """(income, balance, cashflow) frames from a yfinance Ticker, or None on failure."""
+    try:
+        return ticker.income_stmt, ticker.balance_sheet, ticker.cashflow
+    except Exception:
+        log.debug("statement fetch failed", exc_info=True)
+        return None
+
+
+def _piotroski_tests(tally, inc, bal, cfs, ta, cl, y0, y1) -> None:
+    """Run the nine F-score tests for fiscal years y0 (latest) and y1 (prior)."""
+    ni = _series(inc, "Net Income", "NetIncome")
+    cfo = _series(cfs, "Operating Cash Flow", "Total Cash From Operating Activities")
+    ca = _series(bal, "Current Assets", "Total Current Assets")
+    ltd = _series(bal, "Long Term Debt", "LongTermDebt")
+    rev = _series(inc, "Total Revenue", "Operating Revenue")
+    gp = _series(inc, "Gross Profit", "GrossProfit")
+    sh = _series(bal, "Ordinary Shares Number", "Share Issued",
+                 "Common Stock Shares Outstanding")
+
+    ta0, ta1 = _at(ta, y0), _at(ta, y1)
+    roa0 = _ratio(_at(ni, y0), ta0)
+    roa1 = _ratio(_at(ni, y1), ta1)
+    cfo0 = _at(cfo, y0)
+
+    # ── PROFITABILITY (4) ───────────────────────────────────────────────────
+    tally("1_roa_positive", _gt(roa0, 0))
+    tally("2_cfo_positive", _gt(cfo0, 0))
+    tally("3_roa_improving", _gt(roa0, roa1))
+    tally("4_accruals_cfo_gt_roa", _gt(_ratio(cfo0, ta0), roa0))
+
+    # ── LEVERAGE / LIQUIDITY / SOURCE OF FUNDS (3) ──────────────────────────
+    tally("5_leverage_falling",
+          _lt(_ratio(_at(ltd, y0), ta0), _ratio(_at(ltd, y1), ta1)))
+    tally("6_current_ratio_rising",
+          _gt(_ratio(_at(ca, y0), _at(cl, y0)), _ratio(_at(ca, y1), _at(cl, y1))))
+    s0, s1 = _at(sh, y0), _at(sh, y1)
+    # tiny share-count drift is rounding/ESOP noise, not an equity raise
+    tally("7_no_dilution", s0 <= s1 * 1.01 if None not in (s0, s1) and s1 else None)
+
+    # ── OPERATING EFFICIENCY (2) ────────────────────────────────────────────
+    tally("8_gross_margin_rising",
+          _gt(_ratio(_at(gp, y0), _at(rev, y0)), _ratio(_at(gp, y1), _at(rev, y1))))
+    tally("9_asset_turnover_rising",
+          _gt(_ratio(_at(rev, y0), ta0), _ratio(_at(rev, y1), ta1)))
+
+
+def _roce_metrics(ebit, ta, cl, cash, yrs):
+    """(roce, roce_ex_cash, roce_cv, history) for the latest year in `yrs`.
+
+    ROCE = EBIT / (total assets - current liabilities); the ex-cash variant also
+    removes cash from capital employed. cv = sd/mean of the per-year history
+    (None below 3 years or when the mean is ~0). All values are fractions.
+    """
+    y0 = yrs[0]
+    hist = [float(ebit[c]) / (float(ta[c]) - float(cl[c]))
+            for c in yrs if (float(ta[c]) - float(cl[c])) > 0]
+    ta0 = _at(ta, y0)
+    ce0 = ta0 - _at(cl, y0) if ta0 is not None and _at(cl, y0) is not None else None
+    roce = float(ebit[y0]) / ce0 if ce0 and ce0 > 0 else None
+    cash0 = _at(cash, y0) or 0.0
+    ce_ex = (ce0 - cash0) if ce0 else None
+    roce_ex = float(ebit[y0]) / ce_ex if ce_ex and ce_ex > 0 else None
+    cv = (float(np.std(hist)) / abs(float(np.mean(hist)))
+          if len(hist) >= 3 and abs(np.mean(hist)) > 0.01 else None)
+    return roce, roce_ex, cv, hist
+
+
 def score(ticker) -> dict:
     """Piotroski F (0-9) + ROCE block (0-3) for one yfinance Ticker.
 
@@ -172,10 +275,10 @@ def score(ticker) -> dict:
     every affected company toward "weak". Callers should read f_score against
     f_tested, not against a presumed 9.
     """
-    try:
-        inc, bal, cfs = ticker.income_stmt, ticker.balance_sheet, ticker.cashflow
-    except Exception:
+    stmts = _statements(ticker)
+    if stmts is None:
         return {}
+    inc, bal, cfs = stmts
 
     ebit = _series(inc, "EBIT", "Operating Income", "OperatingIncome")
     ta = _series(bal, "Total Assets")
@@ -185,92 +288,24 @@ def score(ticker) -> dict:
     yrs = [c for c in ebit.index if c in ta.index and c in cl.index]
     if len(yrs) < 2:
         return {}
-    y0, y1 = yrs[0], yrs[1]
 
-    ni = _series(inc, "Net Income", "NetIncome")
-    cfo = _series(cfs, "Operating Cash Flow", "Total Cash From Operating Activities")
-    ca = _series(bal, "Current Assets", "Total Current Assets")
-    ltd = _series(bal, "Long Term Debt", "LongTermDebt")
-    rev = _series(inc, "Total Revenue", "Operating Revenue")
-    gp = _series(inc, "Gross Profit", "GrossProfit")
-    sh = _series(bal, "Ordinary Shares Number", "Share Issued",
-                 "Common Stock Shares Outstanding")
-    cash = _series(bal, "Cash Cash Equivalents And Short Term Investments",
-                   "Cash And Cash Equivalents", "CashAndCashEquivalents")
-
-    f, ftest, detail = 0, 0, {}
-
-    def T(name, cond):
-        nonlocal f, ftest
-        if cond is None:
-            detail[name] = None
-            return
-        ftest += 1
-        f += 1 if cond else 0
-        detail[name] = bool(cond)
-
-    ta0, ta1 = _at(ta, y0), _at(ta, y1)
-    ni0, ni1 = _at(ni, y0), _at(ni, y1)
-    roa0 = ni0 / ta0 if None not in (ni0, ta0) and ta0 else None
-    roa1 = ni1 / ta1 if None not in (ni1, ta1) and ta1 else None
-    cfo0 = _at(cfo, y0)
-
-    # ── PROFITABILITY (4) ───────────────────────────────────────────────────
-    T("1_roa_positive", roa0 > 0 if roa0 is not None else None)
-    T("2_cfo_positive", cfo0 > 0 if cfo0 is not None else None)
-    T("3_roa_improving", roa0 > roa1 if None not in (roa0, roa1) else None)
-    T("4_accruals_cfo_gt_roa",
-      (cfo0 / ta0) > roa0 if None not in (cfo0, ta0, roa0) and ta0 else None)
-
-    # ── LEVERAGE / LIQUIDITY / SOURCE OF FUNDS (3) ──────────────────────────
-    l0 = _at(ltd, y0) / ta0 if _at(ltd, y0) is not None and ta0 else None
-    l1 = _at(ltd, y1) / ta1 if _at(ltd, y1) is not None and ta1 else None
-    T("5_leverage_falling", l0 < l1 if None not in (l0, l1) else None)
-    cr0 = _at(ca, y0) / _at(cl, y0) if _at(ca, y0) is not None and _at(cl, y0) else None
-    cr1 = _at(ca, y1) / _at(cl, y1) if _at(ca, y1) is not None and _at(cl, y1) else None
-    T("6_current_ratio_rising", cr0 > cr1 if None not in (cr0, cr1) else None)
-    s0, s1 = _at(sh, y0), _at(sh, y1)
-    # tiny share-count drift is rounding/ESOP noise, not an equity raise
-    T("7_no_dilution", s0 <= s1 * 1.01 if None not in (s0, s1) and s1 else None)
-
-    # ── OPERATING EFFICIENCY (2) ────────────────────────────────────────────
-    gm0 = _at(gp, y0) / _at(rev, y0) if _at(gp, y0) is not None and _at(rev, y0) else None
-    gm1 = _at(gp, y1) / _at(rev, y1) if _at(gp, y1) is not None and _at(rev, y1) else None
-    T("8_gross_margin_rising", gm0 > gm1 if None not in (gm0, gm1) else None)
-    t0 = _at(rev, y0) / ta0 if _at(rev, y0) is not None and ta0 else None
-    t1 = _at(rev, y1) / ta1 if _at(rev, y1) is not None and ta1 else None
-    T("9_asset_turnover_rising", t0 > t1 if None not in (t0, t1) else None)
+    detail: dict = {}
+    f = _Tally(detail)
+    _piotroski_tests(f, inc, bal, cfs, ta, cl, yrs[0], yrs[1])
 
     # ── ROCE BLOCK (+3) ─────────────────────────────────────────────────────
-    hist = [float(ebit[c]) / (float(ta[c]) - float(cl[c]))
-            for c in yrs if (float(ta[c]) - float(cl[c])) > 0]
-    ce0 = ta0 - _at(cl, y0) if ta0 is not None and _at(cl, y0) is not None else None
-    roce = float(ebit[y0]) / ce0 if ce0 and ce0 > 0 else None
-    cash0 = _at(cash, y0) or 0.0
-    ce_ex = (ce0 - cash0) if ce0 else None
-    roce_ex = float(ebit[y0]) / ce_ex if ce_ex and ce_ex > 0 else None
-    cv = (float(np.std(hist)) / abs(float(np.mean(hist)))
-          if len(hist) >= 3 and abs(np.mean(hist)) > 0.01 else None)
-
-    p, ptest = 0, 0
-
-    def P(name, cond):
-        nonlocal p, ptest
-        if cond is None:
-            detail[name] = None
-            return
-        ptest += 1
-        p += 1 if cond else 0
-        detail[name] = bool(cond)
-
-    P("10_roce_level", roce_ex > ROCE_LEVEL_HURDLE if roce_ex is not None else None)
-    P("11_roce_stable", cv < ROCE_CV_HURDLE if cv is not None else None)
-    P("12_roce_not_deteriorating",
+    cash = _series(bal, "Cash Cash Equivalents And Short Term Investments",
+                   "Cash And Cash Equivalents", "CashAndCashEquivalents")
+    roce, roce_ex, cv, hist = _roce_metrics(ebit, ta, cl, cash, yrs)
+    p = _Tally(detail)
+    p("10_roce_level", roce_ex > ROCE_LEVEL_HURDLE if roce_ex is not None else None)
+    p("11_roce_stable", cv < ROCE_CV_HURDLE if cv is not None else None)
+    p("12_roce_not_deteriorating",
       roce >= float(np.mean(hist)) if roce is not None and len(hist) >= 3 else None)
 
-    return {"f_score": f if ftest else None, "f_tested": ftest,
-            "plus_score": p if ptest else None, "plus_tested": ptest,
-            "total": (f + p) if ftest and ptest else None,
+    return {"f_score": f.passed if f.ran else None, "f_tested": f.ran,
+            "plus_score": p.passed if p.ran else None, "plus_tested": p.ran,
+            "total": (f.passed + p.passed) if f.ran and p.ran else None,
             "roce": roce, "roce_ex_cash": roce_ex, "roce_cv": cv,
             "years": len(hist), **detail}
 

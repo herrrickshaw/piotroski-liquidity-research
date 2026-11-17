@@ -55,7 +55,9 @@ warnings.filterwarnings("ignore")
 import duckdb
 import pandas as pd
 
-FUND = "/Users/umashankar/repos/global-stock-screener/cache_seed/fundamentals_history/IN.parquet"
+from data_paths import data_path
+
+FUND = data_path("PLR_IN_FUND")
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 60
 WORKERS = 6
 
@@ -129,11 +131,11 @@ def main() -> int:
         print("  no overlapping years — cannot validate"); return 1
 
     agree = (d.true_rising == d.proxy_rising).mean() * 100
-    print(f"  === LEVEL (expected to be wrong — reported to prove the point) ===")
+    print("  === LEVEL (expected to be wrong — reported to prove the point) ===")
     print(f"    median true current ratio : {d.true_cr.median():.2f}")
     print(f"    median proxy current ratio: {d.proxy_cr.median():.2f}")
-    print(f"    -> the proxy LEVEL is not a current ratio and must never be shown as one\n")
-    print(f"  === SIGN OF THE DELTA (what Piotroski test 6 actually asks) ===")
+    print("    -> the proxy LEVEL is not a current ratio and must never be shown as one\n")
+    print("  === SIGN OF THE DELTA (what Piotroski test 6 actually asks) ===")
     print(f"    n = {len(d)} company-years across {d.Symbol.nunique()} tickers")
     print(f"    proxy delta sign matches truth: {agree:.1f}%")
     base = max(d.true_rising.mean(), 1 - d.true_rising.mean()) * 100
@@ -147,7 +149,7 @@ def main() -> int:
         v = "DROP test 6 — a coin-flip that looks populated is worse than a skip"
     print(f"    VERDICT: {agree:.1f}% -> {v}")
     d.to_csv("reports/current_ratio_proxy_validation.csv", index=False)
-    print(f"\n  -> reports/current_ratio_proxy_validation.csv")
+    print("\n  -> reports/current_ratio_proxy_validation.csv")
     return 0
 
 

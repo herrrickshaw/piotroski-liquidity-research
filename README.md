@@ -9,11 +9,45 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/herrrickshaw/piotroski-liquidity-research/blob/main/notebooks/colab_test.ipynb)
 
 Point-in-time backtests asking one question: **is the Piotroski F-score premium
-conditioned by firm size, or by stock liquidity?**
+conditioned by firm size, or by stock liquidity?** The scripts score the 9-point F-score
+(plus a separate 3-point ROCE block) on US (SEC EDGAR) and Indian (screener.in)
+fundamentals, rebalance annually with entry gated on the filing date, and write
+forward-return tables and CSVs to `reports/`. Written findings are in `reports/`.
 
-> **Educational and research use only. Not investment advice.**
+> Status: research-only. **Educational and research use only. Not investment advice.**
 > Findings are historical averages on short samples. Past performance does not
 > guarantee future returns. Consult a SEBI-registered (or your jurisdiction's) adviser.
+
+## What it does
+- Double-sorts liquidity within size and reports the F-score premium per cell (`size_vs_liquidity_us.py`).
+- Estimates trading cost (Corwin–Schultz spread + Amihud impact) and the capital capacity of the edge (`cost_vs_edge.py`).
+- Sweeps weight vectors over the 12 Piotroski-Plus tests, US and India (`sweep_piotroski_plus_us.py`, `sweep_piotroski_plus.py`).
+- Scores a live `yfinance` ticker with the canonical F-score + ROCE block (`piotroski_plus.score`).
+- Audits data completeness and validates derived metrics before results are trusted.
+
+## Quick start
+```bash
+git clone https://github.com/herrrickshaw/piotroski-liquidity-research.git
+cd piotroski-liquidity-research
+python -m venv .venv && source .venv/bin/activate
+pip install duckdb numpy pandas pyarrow pytest ruff    # see pyproject.toml
+pytest -q                                              # offline; synthetic data only
+python data_completeness_audit.py                      # run first, needs the parquet panels (see Data)
+python size_vs_liquidity_us.py                         # the headline table
+```
+
+## How it works
+| Stage | Module | Output |
+|---|---|---|
+| Score 12 tests (9 F-score + 3 ROCE), skipped tests tracked | `piotroski_plus.py` (`score`) | raw booleans per test |
+| Apply weight vectors to already-scored results | `piotroski_plus.py` (`weigh`, `sweep`, `PRESETS`) | `pct`, `coverage` per preset |
+| Shared sweep plumbing: forward-return SQL, ROCE stability tests, report tables | `sweep_common.py` | forward returns, tables |
+| US / India sweeps | `sweep_piotroski_plus_us.py`, `sweep_piotroski_plus.py` | stdout tables, `reports/sweep_*.csv` |
+| Liquidity gate, tiers and capacity maths | `adaptive_liquidity.py` | tradeable flag, percentile tier |
+
+Weights are applied after scoring so statements are tested once and any number of weight
+vectors are swept over the cached result. Skipped tests (missing inputs) leave both
+numerator and denominator, so scores stay comparable across differing coverage.
 
 ---
 
@@ -87,9 +121,9 @@ businesses; illiquid stocks are better investments.** Both hold.
 - **[reports/PIOTROSKI_LIQUIDITY_PAPER.md](reports/PIOTROSKI_LIQUIDITY_PAPER.md)** — full note with method, results, and limitations
 - **[reports/CAVEMAN_SUMMARY.md](reports/CAVEMAN_SUMMARY.md)** — same findings in plain words, with the assumptions and data sources stated explicitly
 
-## Code
+## Repository layout
 
-| file | does |
+| Path | Purpose |
 |---|---|
 | `piotroski_plus.py` | canonical 9-point F-score + separate 3-point ROCE block; tunable weight vectors |
 | `size_vs_liquidity_us.py` | **the headline** — double-sorts liquidity within size |
@@ -103,6 +137,13 @@ businesses; illiquid stocks are better investments.** Both hold.
 | `data_completeness_audit.py` | **run first** — how much of the data an analysis actually uses |
 | `validate_current_ratio_proxy.py` | validates (and rejects) a proxy metric |
 | `golden_cross.py` | 50/200-DMA, one implementation for all markets |
+| `adaptive_liquidity.py` | liquidity floors, `Gate`, percentile tiers, capacity |
+| `combo_by_tier_us.py` | darvas × piotroski combination by liquidity tier |
+| `sweep_common.py` | helpers shared by the two sweeps |
+| `tests/` | offline pytest suite: characterisation (golden outputs) + unit + smoke |
+| `reports/` | papers and the CSV outputs the scripts write |
+| `notebooks/colab_test.ipynb` | Colab smoke notebook |
+| `graphify-out/` | generated knowledge-graph cache (not hand-written) |
 
 ## Method notes
 
@@ -168,9 +209,28 @@ a mechanism that sounds right is not evidence.**
 - Piotroski (2000), *Journal of Accounting Research* 38 — value investing / F-score
 - Walkshäusl et al., EconStor — F-score revisited from an investor's perspective
 
-## Data
+## Data sources
 
 Not included (large, and not ours to redistribute). Scripts expect:
 - `global-stock-screener/cache_seed/fundamentals_history/US.parquet` — SEC EDGAR
 - `global-stock-screener/cache_seed/ltm/US.parquet` — prices (**the complete panel**)
 - `global-stock-screener/cache_seed/fundamentals_history/IN.parquet` — screener.in
+
+Scrapers/collectors live in the sibling repos; the scripts here only read the parquet files.
+
+## Configuration
+No environment variables and no secrets. Input paths are module constants (`FUND`, `PX`) at the
+top of each script and currently point at the author's local checkout of the sibling data repos;
+edit them to your location. Tuning constants (`HOLD`, `TOP_N`, `LAG_DAYS`, `ROCE_*_HURDLE`) are
+also module-level.
+
+## Testing
+```bash
+pytest -q
+```
+The suite never touches a live data API. `tests/golden/baseline.json` holds outputs captured from the
+pre-refactor code on deterministic synthetic panels; the tests assert the current code reproduces them
+(stdout and CSV of both sweeps, `piotroski_plus`, `golden_cross`, `adaptive_liquidity`).
+
+## Licence
+No licence file yet — all rights reserved.

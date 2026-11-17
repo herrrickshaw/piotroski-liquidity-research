@@ -52,8 +52,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import duckdb
-import numpy as np
 import pandas as pd
+
+from data_paths import data_path
 
 # 🔴 WAS global-market-data/cache_seed/ltm/US.parquet — an INTERRUPTED collection.
 # It holds 5,358 symbols but is missing whole letter blocks (D-L, O, U-Z) and omits
@@ -62,7 +63,7 @@ import pandas as pd
 # A,B,C,M,N,P,Q,R,S,T — a letter-biased subset, not a universe.
 # The complete panel is in global-stock-screener: 9,278 symbols, and overlap with EDGAR
 # fundamentals rises 2,281 (50%) -> 4,459 (97%).
-PX = "/Users/umashankar/repos/global-stock-screener/cache_seed/ltm/US.parquet"
+PX = data_path("PLR_US_PX")
 SWEEP = "reports/sweep_piotroski_plus_us.csv"
 PORTFOLIO_N = 10          # top-10 per tier, matching the sweep
 # Full ladder. The earlier (100k, 1M, 10M, 50M) set skipped the small end entirely and

@@ -59,7 +59,9 @@ import sys
 
 import duckdb
 
-PARQUET = "/Users/umashankar/repos/global-market-data/cache_seed/ltm/IN.parquet"
+from data_paths import data_path
+
+PARQUET = data_path("PLR_IN_PX")
 HOLD_BARS = 63          # ~3 trading months
 LIQ_WINDOW = 60         # bars of history for the liquidity measure
 MIN_BARS_FOR_DMA = 200
