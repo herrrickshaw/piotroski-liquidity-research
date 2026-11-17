@@ -138,6 +138,31 @@ def amihud(con) -> pd.DataFrame:
     """).df()
 
 
+def within_tier_gross(d: pd.DataFrame, tiers: pd.DataFrame, presets,
+                      top_n: int = PORTFOLIO_N, min_years: int = 4) -> dict:
+    """Median within-tier edge per preset, in %, measured from the sweep panel `d`.
+
+    Same rule as sweep_piotroski_plus_us.py's within-tier table: each rebalance, take the
+    top-`top_n` names by preset score inside the tier (pool must hold >= 2*top_n scored
+    names), edge = portfolio median fwd_ret - tier median fwd_ret, averaged over rebalances;
+    NaN when fewer than `min_years` rebalances qualify.
+    """
+    dl = d.merge(tiers[["Symbol", "tier"]], on="Symbol", how="inner")
+    out = {}
+    for t in ("SMALL", "MID", "LARGE"):
+        st = dl[dl.tier == t]
+        out[t] = {}
+        for p in presets:
+            per = []
+            for _, g in st.groupby("t"):
+                g2 = g[g[p].notna()]
+                if len(g2) < top_n * 2:
+                    continue
+                per.append(g2.nlargest(top_n, p).fwd_ret.median() - g2.fwd_ret.median())
+            out[t][p] = float(np.mean(per) * 100) if len(per) >= min_years else float("nan")
+    return out
+
+
 def main() -> int:
     con = duckdb.connect()
     print(f"\n{'='*78}\n  DOES THE SMALL-CAP EDGE SURVIVE COSTS? | US"
@@ -160,10 +185,11 @@ def main() -> int:
         print(f"  {t:7s} {len(s):>4} {'$'+format(s.turnover.median()/1e6, ',.1f')+'M':>14s} "
               f"{s.spread.median()*100:>8.2f}% {s.illiq.median()*100:>15.3f}%")
 
-    # gross median edges, measured in the within-tier sweep
-    GROSS = {"SMALL": {"canonical": 5.7, "quality": 6.5, "turnaround": 13.3, "safety": 7.1},
-             "MID":   {"canonical": -0.5, "quality": 0.6, "turnaround": -0.8, "safety": 0.9},
-             "LARGE": {"canonical": -1.6, "quality": -0.2, "turnaround": -9.0, "safety": -5.8}}
+    # gross median edges, measured here from the sweep panel on the SAME tiers the costs use
+    # (these were hardcoded literals from an earlier run: SMALL canonical 5.7 / quality 6.5 /
+    # turnaround 13.3 / safety 7.1, so the table never moved with the data it loaded)
+    presets = [c for c in d.columns if c not in ("Symbol", "t", "fwd_ret")]
+    GROSS = within_tier_gross(d, m[["Symbol", "tier"]], presets)
 
     print("\n  === NET EDGE AFTER ROUND-TRIP COSTS, by portfolio size ===")
     print("      (round trip = spread + 2 x impact, charged once/yr at ~100% turnover)")
@@ -190,7 +216,7 @@ def main() -> int:
         pos = cap / PORTFOLIO_N
         cost = (s.spread.median() + 2 * s.illiq.median() * (pos / 1e6)) * 100
         adv = pos / s.turnover.median() * 100
-        best = max(GROSS["SMALL"].values())
+        best = float(np.nanmax(list(GROSS["SMALL"].values())))
         surv = "SURVIVES" if best - cost > 0 else "DEAD"
         print(f"    ${cap:>11,}  cost {cost:>6.2f}%/yr  ({adv:>5.1f}% of ADV)  "
               f"best gross {best:+.1f}% -> net {best-cost:+6.1f}%  {surv}")

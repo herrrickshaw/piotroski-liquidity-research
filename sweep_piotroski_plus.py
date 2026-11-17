@@ -85,8 +85,9 @@ def load():
 def tests(cur, prv, hist) -> dict:
     """The 8 available Piotroski tests + the 3 ROCE tests, as raw booleans."""
     d = {}
-    roa = cur.net_income / cur.ta if cur.ta else None
-    roa_p = prv.net_income / prv.ta if prv.ta else None
+    # NaN net income must SKIP tests 1/3/4 (NaN compares False, which scored them as fails)
+    roa = cur.net_income / cur.ta if cur.ta and pd.notna(cur.net_income) else None
+    roa_p = prv.net_income / prv.ta if prv.ta and pd.notna(prv.net_income) else None
     d["1_roa_positive"] = bool(roa > 0) if roa is not None else None
     d["2_cfo_positive"] = bool(cur.cfo > 0) if pd.notna(cur.cfo) else None
     d["3_roa_improving"] = bool(roa > roa_p) if None not in (roa, roa_p) else None
