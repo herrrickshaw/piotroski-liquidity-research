@@ -191,7 +191,11 @@ def main() -> int:
         cost = (s.spread.median() + 2 * s.illiq.median() * (pos / 1e6)) * 100
         adv = pos / s.turnover.median() * 100
         best = max(GROSS["SMALL"].values())
-        surv = "SURVIVES" if best - cost > 0 else "DEAD"
+        # ADV_CEILING_PCT is defined above but was never applied: without this, $500k (30% of
+        # ADV) and $1M (60% of ADV) print SURVIVES, contradicting the README's ~$250k capacity.
+        surv = ("DEAD" if best - cost <= 0
+                else f"NOT EXECUTABLE (>{ADV_CEILING_PCT:.0f}% of ADV)" if adv > ADV_CEILING_PCT
+                else "SURVIVES")
         print(f"    ${cap:>11,}  cost {cost:>6.2f}%/yr  ({adv:>5.1f}% of ADV)  "
               f"best gross {best:+.1f}% -> net {best-cost:+6.1f}%  {surv}")
     print("\n    Conservative: C-S is a LOWER bound on the effective spread; impact is")
