@@ -1,0 +1,11 @@
+[run]
+source = .
+omit =
+    tests/*
+    notebooks/*
+    graphify-out/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
