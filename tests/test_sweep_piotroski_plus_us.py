@@ -80,6 +80,9 @@ def world(load, tmp_path, monkeypatch):
         for r in rows:
             if r["fy_end"].year == 2020:
                 r["filed"] = pd.Timestamp("2021-06-01") + dt.timedelta(days=lag - 152)
+                # FY2020 is a bad year, so seeing it or not changes the score
+                r.update(net_income=-50.0, cfo=-10.0, long_term_debt=400.0, current_assets=300.0,
+                         shares=105.0, gross_profit=100.0, revenue=700.0)
         funds += rows
         px.append(pd.DataFrame({"Date": CAL, "Symbol": nm, "Close": walk(NB, 500, 50.0, 0.01),
                                 "Volume": 5e9}))
@@ -147,6 +150,7 @@ def test_entry_is_gated_on_the_filing_date_inclusive(world, capsys):
         assert vis.iloc[-1].fy_end.year == expect_year
         want = expected_booleans(vis.iloc[-1], vis.iloc[-2], (vis.ebit / (vis.total_assets - vis.current_liabilities)).tolist())
         assert by(tk).canonical == pytest.approx(PP.weigh(want, "canonical")["pct"])
+    assert by("EDGE_IN").canonical < by("EDGE_OUT").canonical            # the bad year is seen only on the filing date
 
 
 def test_forward_return_and_corporate_action_filter(world, tmp_path, capsys):
@@ -343,3 +347,26 @@ def test_no_scored_rows_returns_one(world, tmp_path, capsys):
                                    tmp_path / "none.parquet")
     assert world.mod.main() == 1
     assert "no scored rows" in capsys.readouterr().out
+
+
+def test_pool_size_edges_exactly_twenty_names(world, tmp_path, capsys):
+    # Only the 20 lowest-turnover names have two visible fiscal years at the first rebalance, so the
+    # first-year pool is exactly TOP_N overall and exactly 2 x TOP_T inside the SMALL tier.
+    funds = world.funds
+    liq = liq_table(world)
+    lowest = set(liq[TICKERS].sort_values().index[:20])         # turnover = close x volume, not just volume
+    late = ~funds.ticker.isin(lowest) & (funds.fy_end.dt.year < 2016)
+    keep = ~late & ~funds.ticker.str.startswith("EDGE")
+    world.mod.FUND = write_parquet(funds[keep], tmp_path / "late.parquet")
+    _, out, d = run(world, capsys)
+    assert (d.t == "2017-06-01").sum() == 20
+    port = section(out, "TOP-20 PORTFOLIO PER VECTOR", "excess vs universe")
+    for l in port.splitlines():
+        if l.split() and l.split()[0] in ("canonical", "quality", "turnaround", "safety"):
+            assert l.split()[4].endswith("/9")                                   # 2017's pool of exactly 20 counts
+    tiers = section(out, "RANK WITHIN TIER")
+    small = [l.split() for l in tiers.splitlines() if l.split()[:1] == ["SMALL"]]
+    mid = [l.split() for l in tiers.splitlines() if l.split()[:1] == ["MID"]]
+    assert small and mid
+    assert all(r[-1].endswith("/9") for r in small)          # 2017's pool of exactly 20 is ranked
+    assert all(r[-1].endswith("/8") for r in mid)            # MID has no 2017 pool

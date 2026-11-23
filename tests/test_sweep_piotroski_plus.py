@@ -308,6 +308,7 @@ def test_vectors_with_fewer_than_top_n_names_are_skipped(sw, world, tmp_path, ca
     sw.FUND = write_parquet(funds, tmp_path / "few.parquet")
     rc, out, d = run_main(world, capsys)
     assert rc == 0 and d.groupby("t").size().max() == 20         # exactly TOP_N: still enough
+    assert set(parse_portfolio_rows(out)) == {"[universe]", "canonical", "quality", "turnaround", "safety"}
     sw.FUND = write_parquet(world.funds[world.funds.ticker.isin(TICKERS[:9] + TICKERS[16:26])], tmp_path / "few2.parquet")
     rc, out, d = run_main(world, capsys)
     assert d.groupby("t").size().max() == 19

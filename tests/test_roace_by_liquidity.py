@@ -322,3 +322,19 @@ def test_main_with_no_statements_reports_no_data(rbl, monkeypatch, tmp_path, cap
                                             ["L0", "L1", "L2", "M0", "M1", "M2", "S0", "S1", "S2"]})
     assert rbl.main() == 1
     assert "no data" in capsys.readouterr().out
+
+
+@pandas3_tier_bug
+def test_cv_exactly_at_the_hurdle_is_not_steady(rbl, monkeypatch, tmp_path, capsys):
+    rbl.PARQUET = write_parquet(pd.concat(universe_frames(), ignore_index=True), tmp_path / "in.parquet")
+
+    def fake(sym):
+        return {"Symbol": sym, "ebit": 1.0, "capital_employed": 1.0, "cash": 0.0, "roace": 0.20,
+                "years": 5, "roace_ex_cash": 0.20, "cash_pct_of_ce": 0.0, "roace_cv": 0.30,
+                "f_score": None, "f_max": 7}
+
+    monkeypatch.setattr(rbl, "roace_one", fake)
+    assert rbl.main() == 0
+    sec2 = capsys.readouterr().out.split("2. ROCE STABILITY")[1].split("3. ROCE")[0]
+    rows = {l.split()[0]: l.split() for l in sec2.splitlines() if l.split() and l.split()[0] in ("LARGE", "MID", "SMALL")}
+    assert rows["LARGE"][3] == "0%" and rows["LARGE"][4] == "0%"        # CV < 0.30 is strict

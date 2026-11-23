@@ -190,3 +190,23 @@ def test_adv_ceiling_is_applied_in_the_verdict(cve, world, capsys, monkeypatch):
     _, out = run(cve, capsys)
     v = out.split("=== VERDICT ===")[1]
     assert "SURVIVES" not in v and "NOT EXECUTABLE (>0% of ADV)" in v
+
+
+def test_adv_equal_to_the_ceiling_is_still_executable(cve, world, capsys, monkeypatch):
+    am = cve.amihud(duckdb.connect()).set_index("Symbol")
+    turn = am.loc[["S0", "S1", "S2"]].turnover.median()
+    cap = 10_000
+    pos = cap / cve.PORTFOLIO_N
+    monkeypatch.setattr(cve, "ADV_CEILING_PCT", pos / turn * 100)        # exactly the position's ADV share
+    _, out = run(cve, capsys)
+    line = [l for l in out.split("=== VERDICT ===")[1].splitlines() if l.strip().startswith("$") and "10,000 " in l][0]
+    assert "SURVIVES" in line
+
+
+def test_corwin_schultz_keeps_zero_range_days_as_pair_partners(cve, tmp_path):
+    flat_days = symbol_frame("Z", 0.01, 1e4, n=260)
+    flat_days.loc[flat_days.index[::10], ["High", "Low"]] = 100.0        # High == Low on every 10th bar
+    cve.PX = write_parquet(flat_days, tmp_path / "p.parquet")
+    r = cve.corwin_schultz(duckdb.connect()).iloc[0]
+    # High >= Low keeps those bars, so each still pairs with its neighbours (259 pairs, none dropped)
+    assert r.n == 259
